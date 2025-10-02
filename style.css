@@ -1,54 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
 
-/* ---------------------------
-   Animated Gradient Background
-   (full-page, subtle shifting)
-   --------------------------- */
-
-:root{
-  --dark-grad-1: #0f1720;
-  --dark-grad-2: #102135;
-  --dark-grad-3: #263447;
-  --dark-grad-4: #0b1a2a;
-
-  --light-grad-1: #f7fafc;
-  --light-grad-2: #eef2f7;
-  --light-grad-3: #e6eef8;
-  --light-grad-4: #f5f7fb;
-}
-
-/* default (dark) */
-body {
-  background: linear-gradient(120deg, var(--dark-grad-1), var(--dark-grad-2), var(--dark-grad-3), var(--dark-grad-4));
-  background-size: 400% 400%;
-  animation: gradientShift 14s ease infinite;
-  transition: background 0.6s ease, color 0.4s ease;
-}
-
-/* light mode override */
-body.light {
-  background: linear-gradient(120deg, var(--light-grad-1), var(--light-grad-2), var(--light-grad-3), var(--light-grad-4));
-  background-size: 400% 400%;
-  animation: gradientShiftLight 12s ease infinite;
-  color: #111;
-}
-
-/* animation keyframes */
-@keyframes gradientShift {
-  0%   { background-position: 0% 50%; }
-  25%  { background-position: 50% 100%; }
-  50%  { background-position: 100% 50%; }
-  75%  { background-position: 50% 0%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* lighter, faster loop for light mode */
-@keyframes gradientShiftLight {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
