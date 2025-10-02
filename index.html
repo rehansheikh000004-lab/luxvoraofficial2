@@ -5,120 +5,189 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Luxvoraofficial</title>
   <style>
-    /* ---------------------------
-       Animated Gradient Background
-       --------------------------- */
-
-    :root {
-      /* Dark mode gradient colors */
-      --dark-grad-1: #0f1720;
-      --dark-grad-2: #102135;
-      --dark-grad-3: #263447;
-      --dark-grad-4: #0b1a2a;
-
-      /* Light mode gradient colors */
-      --light-grad-1: #f7fafc;
-      --light-grad-2: #eef2f7;
-      --light-grad-3: #e6eef8;
-      --light-grad-4: #f5f7fb;
-    }
-
-    body {
+    /* ---------- RESET ---------- */
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+    body {
       font-family: "Poppins", sans-serif;
-      background: linear-gradient(
-        120deg,
-        var(--dark-grad-1),
-        var(--dark-grad-2),
-        var(--dark-grad-3),
-        var(--dark-grad-4)
-      );
-      background-size: 400% 400%;
-      animation: gradientShift 14s ease infinite;
-      transition: background 0.6s ease, color 0.4s ease;
       color: #fff;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-
-    body.light {
-      background: linear-gradient(
-        120deg,
-        var(--light-grad-1),
-        var(--light-grad-2),
-        var(--light-grad-3),
-        var(--light-grad-4)
-      );
+      background: linear-gradient(120deg, #0f1720, #102135, #263447, #0b1a2a);
       background-size: 400% 400%;
-      animation: gradientShiftLight 12s ease infinite;
+      animation: gradientShift 16s ease infinite;
+      transition: background 0.6s ease, color 0.4s ease;
+    }
+    body.light {
+      background: linear-gradient(120deg, #f7fafc, #eef2f7, #e6eef8, #f5f7fb);
+      background-size: 400% 400%;
+      animation: gradientShiftLight 14s ease infinite;
       color: #111;
     }
 
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
+    /* ---------- NAV ---------- */
+    nav {
+      width: 100%;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      z-index: 100;
     }
-
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 20px;
+    nav h1 {
+      font-size: 1.5rem;
+      letter-spacing: 2px;
     }
-
-    button {
-      padding: 10px 20px;
+    nav button {
+      padding: 8px 14px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 1rem;
-      background: rgba(255,255,255,0.8);
-      color: #111;
+      font-size: 0.9rem;
+      background: rgba(255,255,255,0.2);
+      color: #fff;
       transition: 0.3s ease;
     }
-
-    button:hover {
-      background: rgba(255,255,255,1);
+    body.light nav button {
+      color: #111;
+    }
+    nav button:hover {
+      background: rgba(255,255,255,0.4);
     }
 
-    footer {
-      margin-top: auto;
-      padding: 15px;
-      font-size: 0.9rem;
+    /* ---------- HERO ---------- */
+    header {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 120px 20px 60px;
       text-align: center;
-      opacity: 0.8;
+      animation: fadeIn 2s ease;
+    }
+    header h2 {
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+      letter-spacing: 1px;
+    }
+    header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
     }
 
-    /* Gradient animations */
+    /* ---------- PROJECT CARDS ---------- */
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(16px);
+      padding: 20px;
+      border-radius: 16px;
+      text-align: center;
+      transition: transform 0.3s ease, background 0.3s ease;
+      animation: fadeInUp 1.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      background: rgba(255,255,255,0.2);
+    }
+    .card h3 {
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+    }
+    .card p {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(255,255,255,0.2);
+    }
+
+    /* ---------- ANIMATIONS ---------- */
     @keyframes gradientShift {
-      0%   { background-position: 0% 50%; }
-      25%  { background-position: 50% 100%; }
-      50%  { background-position: 100% 50%; }
-      75%  { background-position: 50% 0%; }
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-
     @keyframes gradientShiftLight {
-      0%   { background-position: 0% 50%; }
-      50%  { background-position: 100% 50%; }
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <h1>Luxvoraofficial</h1>
-  <p>Web Developer • Innovator • Creator</p>
+  <!-- Navigation -->
+  <nav>
+    <h1>Luxvoraofficial</h1>
+    <button id="themeToggle">Toggle Mode</button>
+  </nav>
 
-  <button id="themeToggle">Toggle Dark/Light Mode</button>
+  <!-- Hero Section -->
+  <header>
+    <h2>Web Developer • Innovator • Creator</h2>
+    <p>Welcome to my portfolio. Explore my projects below 👇</p>
+  </header>
 
+  <!-- Projects Section -->
+  <section class="projects">
+    <div class="card">
+      <h3>⏰ Clock App</h3>
+      <p>A live digital clock built with JavaScript.</p>
+    </div>
+    <div class="card">
+      <h3>🌦️ Weather App</h3>
+      <p>A simple weather app that shows local weather.</p>
+    </div>
+    <div class="card">
+      <h3>📝 To-Do App</h3>
+      <p>Organize your daily tasks with a minimal todo app.</p>
+    </div>
+    <div class="card">
+      <h3>💡 Quote Generator</h3>
+      <p>Get inspired with random quotes each time.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
   <footer>
     © 2025 Luxvoraofficial — Built by Rehan Sheikh
   </footer>
 
   <script>
+    // Theme toggle
     const toggleBtn = document.getElementById("themeToggle");
     toggleBtn.addEventListener("click", () => {
       document.body.classList.toggle("light");
