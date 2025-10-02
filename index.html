@@ -3,73 +3,126 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LuxvoraOfficial</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Luxvoraofficial</title>
+  <style>
+    /* ---------------------------
+       Animated Gradient Background
+       --------------------------- */
+
+    :root {
+      /* Dark mode gradient colors */
+      --dark-grad-1: #0f1720;
+      --dark-grad-2: #102135;
+      --dark-grad-3: #263447;
+      --dark-grad-4: #0b1a2a;
+
+      /* Light mode gradient colors */
+      --light-grad-1: #f7fafc;
+      --light-grad-2: #eef2f7;
+      --light-grad-3: #e6eef8;
+      --light-grad-4: #f5f7fb;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(
+        120deg,
+        var(--dark-grad-1),
+        var(--dark-grad-2),
+        var(--dark-grad-3),
+        var(--dark-grad-4)
+      );
+      background-size: 400% 400%;
+      animation: gradientShift 14s ease infinite;
+      transition: background 0.6s ease, color 0.4s ease;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    body.light {
+      background: linear-gradient(
+        120deg,
+        var(--light-grad-1),
+        var(--light-grad-2),
+        var(--light-grad-3),
+        var(--light-grad-4)
+      );
+      background-size: 400% 400%;
+      animation: gradientShiftLight 12s ease infinite;
+      color: #111;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      background: rgba(255,255,255,0.8);
+      color: #111;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background: rgba(255,255,255,1);
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 15px;
+      font-size: 0.9rem;
+      text-align: center;
+      opacity: 0.8;
+    }
+
+    /* Gradient animations */
+    @keyframes gradientShift {
+      0%   { background-position: 0% 50%; }
+      25%  { background-position: 50% 100%; }
+      50%  { background-position: 100% 50%; }
+      75%  { background-position: 50% 0%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes gradientShiftLight {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  </style>
 </head>
 <body>
-  <!-- Particle Background -->
-  <canvas id="particles"></canvas>
+  <h1>Luxvoraofficial</h1>
+  <p>Web Developer • Innovator • Creator</p>
 
-  <!-- Sticky Header -->
-<header class="sticky-header">
-  <h1 class="logo">LuxvoraOfficial</h1>
-  <p class="tagline"><span id="typing"></span></p>
-  <a href="https://instagram.com/luxvoraofficial" target="_blank" class="btn">📸 Instagram</a>
-
-  <!-- Navigation -->
-  <nav>
-    <button onclick="showTab('home')">Home</button>
-    <button onclick="showTab('projects')">Projects</button>
-    <button onclick="showTab('about')">About</button>
-    <button onclick="showTab('contact')">Contact</button>
-    <button onclick="toggleTheme()" id="themeBtn">🌙 Dark Mode</button>
-  </nav>
-</header>
-
-  <!-- Tabs -->
-  <main>
-  <!-- Home -->
-  <section id="home" class="tab active reveal">
-    <h2>✨ Welcome</h2>
-    <p>Hi 👋 I’m <b>Rehan Sheikh</b>.  
-    I’m a <b>Full Stack Web Developer</b>.  
-    This site is for my instagram page Luxvoraofficial ❤</p>
-  </section>
-
-  <!-- Projects -->
-  <section id="projects" class="tab reveal">
-    <h2>📈 My Projects</h2>
-    <div class="project-links">
-      <button onclick="loadProject('quote')">📱 Quote Generator</button>
-      <button onclick="loadProject('todo')">📝 To-Do List</button>
-      <button onclick="loadProject('weather')">🌤️ Weather App</button>
-    </div>
-    <iframe id="projectFrame" src="" frameborder="0"></iframe>
-  </section>
-
-  <!-- About -->
-  <section id="about" class="tab reveal">
-    <h2>👨‍💻 About Me</h2>
-    <p>I am passionate about coding, creating modern websites, and building digital tools.  
-    I am a <b>Full Stack Web Developer</b> and experimenting with HTML, CSS, JS, and more.</p>
-  </section>
-
-  <!-- Contact -->
-  <section id="contact" class="tab reveal">
-    <h2>📩 Contact</h2>
-    <p>Email: <a href="mailto:luxvoraofficial@gmail.com">luxvoraofficial@gmail.com</a></p>
-    <p>Instagram: <a href="https://instagram.com/luxvoraofficial" target="_blank">@luxvoraofficial</a></p>
-  </section>
-</main>
+  <button id="themeToggle">Toggle Dark/Light Mode</button>
 
   <footer>
-    <p>© 2025 LuxvoraOfficial | Built with 💻 by Rehan Sheikh</p>
+    © 2025 Luxvoraofficial — Built by Rehan Sheikh
   </footer>
 
-  <!-- Scroll to Top Button -->
-<button onclick="scrollToTop()" id="scrollTopBtn">⬆</button>
-
-<script src="script.js"></script>
+  <script>
+    const toggleBtn = document.getElementById("themeToggle");
+    toggleBtn.addEventListener("click", () => {
+      document.body.classList.toggle("light");
+    });
+  </script>
 </body>
 </html>
- 
