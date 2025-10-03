@@ -3,26 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Luxvora Blog</title>
+  <title>Luxvora Store</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- HEADER -->
   <header>
-    <h1>Luxvora Blog</h1>
-    <p>Motivation • Growth • Lifestyle</p>
+    <h1>Luxvora Store</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Products</a>
+      <a href="#">Cart 🛒 <span id="cart-count">0</span></a>
+    </nav>
   </header>
 
-  <div class="container" id="posts-container">
-    <!-- Blog posts will be loaded here by JS -->
-  </div>
+  <!-- PRODUCTS -->
+  <section class="products" id="products">
+    <!-- JS will load products here -->
+  </section>
 
-  <button id="themeToggle">Toggle Dark/Light Mode</button>
-
+  <!-- FOOTER -->
   <footer>
     © 2025 Luxvoraofficial — Built by Rehan Sheikh
   </footer>
 
-  <script src="posts.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
