@@ -1,36 +1,20 @@
-// Example products
-const products = [
-  { id: 1, name: "Luxury Watch", price: 250, img: "https://via.placeholder.com/220x150?text=Watch" },
-  { id: 2, name: "Designer Shoes", price: 180, img: "https://via.placeholder.com/220x150?text=Shoes" },
-  { id: 3, name: "Premium Jacket", price: 320, img: "https://via.placeholder.com/220x150?text=Jacket" },
-  { id: 4, name: "Smartphone", price: 699, img: "https://via.placeholder.com/220x150?text=Phone" },
-];
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+const closeBtn = document.querySelector(".close");
 
-const productContainer = document.getElementById("products");
-const cartCount = document.getElementById("cart-count");
-let cart = [];
-
-// Load products dynamically
-function loadProducts() {
-  products.forEach(p => {
-    const div = document.createElement("div");
-    div.classList.add("product");
-    div.innerHTML = `
-      <img src="${p.img}" alt="${p.name}">
-      <h3>${p.name}</h3>
-      <p>$${p.price}</p>
-      <button onclick="addToCart(${p.id})">Add to Cart</button>
-    `;
-    productContainer.appendChild(div);
+document.querySelectorAll(".gallery img").forEach(img => {
+  img.addEventListener("click", () => {
+    lightbox.style.display = "flex";
+    lightboxImg.src = img.src;
   });
-}
+});
 
-// Add to cart
-function addToCart(id) {
-  const product = products.find(p => p.id === id);
-  cart.push(product);
-  cartCount.textContent = cart.length;
-  alert(`${product.name} added to cart!`);
-}
+closeBtn.addEventListener("click", () => {
+  lightbox.style.display = "none";
+});
 
-loadProducts();
+lightbox.addEventListener("click", (e) => {
+  if (e.target !== lightboxImg) {
+    lightbox.style.display = "none";
+  }
+});
