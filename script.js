@@ -1,9 +1,3 @@
-// Dark/Light mode
-const themeToggle = document.getElementById("themeToggle");
-themeToggle.addEventListener("click", () => {
-  document.body.classList.toggle("light");
-});
-
 const board = document.getElementById("game-board");
 const scoreDisplay = document.getElementById("score");
 
