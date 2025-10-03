@@ -5,95 +5,83 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Luxvoraofficial</title>
   <style>
-    /* ---------- RESET ---------- */
+    /* RESET */
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: "Poppins", sans-serif;
+      background: #0d0d0d; /* solid black */
       color: #fff;
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      min-height: 100vh;
       text-align: center;
-      overflow: hidden;
-      background: linear-gradient(120deg, #0f1720, #102135, #263447, #0b1a2a);
-      background-size: 400% 400%;
-      animation: gradientShift 16s ease infinite;
       transition: background 0.6s ease, color 0.4s ease;
     }
     body.light {
-      background: linear-gradient(120deg, #f7fafc, #eef2f7, #e6eef8, #f5f7fb);
-      background-size: 400% 400%;
-      animation: gradientShiftLight 14s ease infinite;
+      background: #fdfdfd; /* solid white */
       color: #111;
     }
 
     h1 {
-      font-size: 2.8rem;
+      font-size: 3rem;
+      font-weight: 600;
       margin-bottom: 10px;
-      z-index: 2;
+      text-transform: uppercase;
+      letter-spacing: 2px;
       position: relative;
     }
+    h1::after {
+      content: "";
+      display: block;
+      width: 60px;
+      height: 3px;
+      margin: 10px auto 0;
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
+      border-radius: 2px;
+      box-shadow: 0 0 8px rgba(229,46,113,0.6);
+    }
+
     p {
       font-size: 1.2rem;
-      z-index: 2;
-      position: relative;
+      margin-bottom: 20px;
+      color: rgba(255,255,255,0.85);
     }
+    body.light p { color: rgba(0,0,0,0.7); }
+
     button {
       padding: 10px 20px;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
       font-size: 1rem;
       margin-top: 20px;
-      z-index: 2;
-      position: relative;
-      background: rgba(255,255,255,0.2);
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
       color: #fff;
-      transition: 0.3s ease;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: transform 0.2s ease;
     }
-    body.light button { color: #111; }
-    button:hover { background: rgba(255,255,255,0.4); }
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 12px rgba(229,46,113,0.6);
+    }
 
     footer {
       margin-top: auto;
       padding: 20px;
       font-size: 0.9rem;
-      z-index: 2;
-      position: relative;
+      opacity: 0.7;
     }
-
-    /* ---------- PARTICLES ---------- */
-    canvas#particles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      pointer-events: none; /* allow clicks through */
-    }
-
-    /* ---------- ANIMATIONS ---------- */
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    @keyframes gradientShiftLight {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+    body.light footer { color: #333; }
   </style>
 </head>
 <body>
-  <canvas id="particles"></canvas>
-
   <h1>Luxvoraofficial</h1>
   <p>Web Developer • Innovator • Creator</p>
+
   <button id="themeToggle">Toggle Dark/Light Mode</button>
 
   <footer>
@@ -101,79 +89,10 @@
   </footer>
 
   <script>
-    // Theme toggle
+    // Dark/Light mode toggle
     document.getElementById("themeToggle").addEventListener("click", () => {
       document.body.classList.toggle("light");
     });
-
-    // ---------- PARTICLE SYSTEM ----------
-    const canvas = document.getElementById("particles");
-    const ctx = canvas.getContext("2d");
-    let particlesArray;
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    // Handle resize
-    window.addEventListener("resize", function(){
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      init();
-    });
-
-    // Create particle
-    class Particle {
-      constructor(x, y, size, speedX, speedY){
-        this.x = x;
-        this.y = y;
-        this.size = size;
-        this.speedX = speedX;
-        this.speedY = speedY;
-      }
-      update(){
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if(this.x > canvas.width || this.x < 0){
-          this.speedX = -this.speedX;
-        }
-        if(this.y > canvas.height || this.y < 0){
-          this.speedY = -this.speedY;
-        }
-      }
-      draw(){
-        ctx.fillStyle = "rgba(255,255,255,0.8)";
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    // Init particle array
-    function init(){
-      particlesArray = [];
-      let numberOfParticles = 80;
-      for(let i = 0; i < numberOfParticles; i++){
-        let size = Math.random() * 2 + 1;
-        let x = Math.random() * (innerWidth - size * 2);
-        let y = Math.random() * (innerHeight - size * 2);
-        let speedX = (Math.random() * 1) - 0.5;
-        let speedY = (Math.random() * 1) - 0.5;
-        particlesArray.push(new Particle(x, y, size, speedX, speedY));
-      }
-    }
-
-    // Animate particles
-    function animate(){
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      for(let i = 0; i < particlesArray.length; i++){
-        particlesArray[i].update();
-        particlesArray[i].draw();
-      }
-      requestAnimationFrame(animate);
-    }
-
-    init();
-    animate();
   </script>
 </body>
 </html>
