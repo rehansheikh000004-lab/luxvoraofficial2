@@ -3,84 +3,116 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Luxvoraofficial</title>
+  <title>Luxvora Blog</title>
   <style>
     /* RESET */
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: "Poppins", sans-serif;
-      background: #0d0d0d; /* solid black */
+      background: #0d0d0d;
       color: #fff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      text-align: center;
-      transition: background 0.6s ease, color 0.4s ease;
+      line-height: 1.6;
+      padding: 20px;
+      transition: background 0.5s, color 0.5s;
     }
     body.light {
-      background: #fdfdfd; /* solid white */
+      background: #fdfdfd;
       color: #111;
     }
 
-    h1 {
-      font-size: 3rem;
-      font-weight: 600;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      position: relative;
+    header {
+      text-align: center;
+      margin-bottom: 40px;
     }
-    h1::after {
-      content: "";
-      display: block;
-      width: 60px;
-      height: 3px;
-      margin: 10px auto 0;
-      background: linear-gradient(90deg, #ff8a00, #e52e71);
-      border-radius: 2px;
-      box-shadow: 0 0 8px rgba(229,46,113,0.6);
+    header h1 {
+      font-size: 2.5rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    header p {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.7);
+    }
+    body.light header p { color: rgba(0,0,0,0.6); }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
     }
 
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 20px;
+    .post {
+      background: rgba(255,255,255,0.05);
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      transition: 0.3s;
+    }
+    body.light .post {
+      background: rgba(0,0,0,0.05);
+    }
+    .post:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    .post h2 {
+      margin-bottom: 10px;
+      font-size: 1.6rem;
+    }
+    .post p {
+      font-size: 1rem;
       color: rgba(255,255,255,0.85);
     }
-    body.light p { color: rgba(0,0,0,0.7); }
+    body.light .post p { color: rgba(0,0,0,0.75); }
 
     button {
+      display: block;
+      margin: 20px auto;
       padding: 10px 20px;
       border: none;
       border-radius: 6px;
-      cursor: pointer;
-      font-size: 1rem;
-      margin-top: 20px;
       background: linear-gradient(90deg, #ff8a00, #e52e71);
       color: #fff;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      transition: transform 0.2s ease;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.3s;
     }
     button:hover {
       transform: scale(1.05);
-      box-shadow: 0 0 12px rgba(229,46,113,0.6);
+      box-shadow: 0 0 10px rgba(229,46,113,0.6);
     }
 
     footer {
-      margin-top: auto;
-      padding: 20px;
-      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 40px;
       opacity: 0.7;
+      font-size: 0.9rem;
     }
-    body.light footer { color: #333; }
   </style>
 </head>
 <body>
-  <h1>Luxvoraofficial</h1>
-  <p>Web Developer • Innovator • Creator</p>
+  <header>
+    <h1>Luxvora Blog</h1>
+    <p>Motivation • Growth • Lifestyle</p>
+  </header>
+
+  <div class="container">
+    <div class="post">
+      <h2>🌟 Don’t Pressure Yourself</h2>
+      <p>Doing your best is already enough. You don’t have to be perfect, just consistent. Growth is a journey, not a race.</p>
+    </div>
+
+    <div class="post">
+      <h2>🔥 Mistakes Are Lessons</h2>
+      <p>There is no shame in making mistakes while trying to figure things out. The goal is to live a fulfilling life, not a perfect one.</p>
+    </div>
+
+    <div class="post">
+      <h2>🌙 Peace Over Perfection</h2>
+      <p>Choose peace of mind over the illusion of perfection. Your mental health is more valuable than meeting unrealistic expectations.</p>
+    </div>
+  </div>
 
   <button id="themeToggle">Toggle Dark/Light Mode</button>
 
@@ -89,7 +121,6 @@
   </footer>
 
   <script>
-    // Dark/Light mode toggle
     document.getElementById("themeToggle").addEventListener("click", () => {
       document.body.classList.toggle("light");
     });
