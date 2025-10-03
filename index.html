@@ -3,24 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Luxvora Store</title>
+  <title>Luxvora Gallery</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <!-- HEADER -->
   <header>
-    <h1>Luxvora Store</h1>
-    <nav>
-      <a href="#">Home</a>
-      <a href="#">Products</a>
-      <a href="#">Cart 🛒 <span id="cart-count">0</span></a>
-    </nav>
+    <h1>Luxvora Gallery</h1>
+    <p>Aesthetic & Classy Moments</p>
   </header>
 
-  <!-- PRODUCTS -->
-  <section class="products" id="products">
-    <!-- JS will load products here -->
+  <!-- GALLERY -->
+  <section class="gallery">
+    <img src="https://picsum.photos/id/1011/500/350" alt="Gallery Image 1">
+    <img src="https://picsum.photos/id/1015/500/350" alt="Gallery Image 2">
+    <img src="https://picsum.photos/id/1016/500/350" alt="Gallery Image 3">
+    <img src="https://picsum.photos/id/1025/500/350" alt="Gallery Image 4">
+    <img src="https://picsum.photos/id/1035/500/350" alt="Gallery Image 5">
+    <img src="https://picsum.photos/id/1043/500/350" alt="Gallery Image 6">
   </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <span class="close">&times;</span>
+    <img class="lightbox-img" id="lightbox-img">
+  </div>
 
   <!-- FOOTER -->
   <footer>
