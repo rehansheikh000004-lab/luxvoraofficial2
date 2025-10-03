@@ -4,73 +4,64 @@ body {
   font-family: "Poppins", sans-serif;
   background: #0d0d0d;
   color: #fff;
-  line-height: 1.6;
+  text-align: center;
   padding: 20px;
 }
 
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 header h1 {
-  font-size: 1.8rem;
+  font-size: 2rem;
   color: #ff8a00;
 }
-nav a {
-  margin-left: 15px;
-  text-decoration: none;
-  color: #fff;
-  transition: 0.3s;
-}
-nav a:hover {
-  color: #e52e71;
-}
-
-.products {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
-.product {
-  background: rgba(255,255,255,0.05);
-  padding: 15px;
-  border-radius: 12px;
-  text-align: center;
-  transition: 0.3s;
-}
-.product:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.3);
-}
-.product img {
-  max-width: 100%;
-  border-radius: 8px;
-}
-.product h3 {
-  margin: 10px 0;
-}
-.product p {
-  margin-bottom: 10px;
+header p {
   color: #ccc;
 }
-button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 6px;
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+.gallery img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
   cursor: pointer;
-  background: linear-gradient(90deg, #ff8a00, #e52e71);
-  color: #fff;
   transition: 0.3s;
 }
-button:hover {
+.gallery img:hover {
   transform: scale(1.05);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.5);
+}
+
+/* LIGHTBOX */
+.lightbox {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.9);
+  justify-content: center;
+  align-items: center;
+}
+.lightbox img {
+  max-width: 90%;
+  max-height: 80%;
+  border-radius: 12px;
+}
+.lightbox .close {
+  position: absolute;
+  top: 20px; right: 30px;
+  font-size: 40px;
+  color: #fff;
+  cursor: pointer;
 }
 
 footer {
-  text-align: center;
-  margin-top: 40px;
-  opacity: 0.7;
+  margin-top: 30px;
   font-size: 0.9rem;
+  opacity: 0.7;
 }
