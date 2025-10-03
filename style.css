@@ -5,36 +5,23 @@ body {
   align-items: center;
   background: #0d0d0d;
   color: #fff;
-  height: 100vh;
   margin: 0;
+  height: 100vh;
 }
 
-h1 { margin: 20px 0 10px 0; color: #ff8a00; }
-p { margin: 5px 0 15px 0; }
+h1 { margin: 20px 0 10px 0; color: #ff8a00; text-align:center; }
+p { margin:5px 0 15px 0; text-align:center; }
 
-#game-board {
-  position: relative;
-  width: 400px;
-  height: 400px;
+canvas {
   background: #111;
   border: 4px solid #ff8a00;
-  display: grid;
-  grid-template-columns: repeat(20, 1fr);
-  grid-template-rows: repeat(20, 1fr);
   border-radius: 12px;
-}
-
-.snake {
-  background: #e52e71;
-  border-radius: 4px;
-}
-
-.food {
-  background: #ff8a00;
-  border-radius: 50%;
+  display: block;
+  margin: 0 auto;
 }
 
 .score {
   margin-top: 15px;
   font-size: 1.2rem;
+  text-align:center;
 }
