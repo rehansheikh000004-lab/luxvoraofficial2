@@ -6,73 +6,66 @@ body {
   color: #fff;
   line-height: 1.6;
   padding: 20px;
-  transition: background 0.5s, color 0.5s;
-}
-body.light {
-  background: #fdfdfd;
-  color: #111;
 }
 
 header {
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 40px;
 }
 header h1 {
-  font-size: 2.5rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 10px;
+  font-size: 1.8rem;
+  color: #ff8a00;
 }
-header p {
-  font-size: 1rem;
-  color: rgba(255,255,255,0.7);
-}
-body.light header p { color: rgba(0,0,0,0.6); }
-
-.container {
-  max-width: 800px;
-  margin: auto;
-}
-
-.post {
-  background: rgba(255,255,255,0.05);
-  padding: 20px;
-  border-radius: 12px;
-  margin-bottom: 25px;
+nav a {
+  margin-left: 15px;
+  text-decoration: none;
+  color: #fff;
   transition: 0.3s;
 }
-body.light .post {
-  background: rgba(0,0,0,0.05);
+nav a:hover {
+  color: #e52e71;
 }
-.post:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-}
-.post h2 {
-  margin-bottom: 10px;
-  font-size: 1.6rem;
-}
-.post p {
-  font-size: 1rem;
-  color: rgba(255,255,255,0.85);
-}
-body.light .post p { color: rgba(0,0,0,0.75); }
 
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+.product {
+  background: rgba(255,255,255,0.05);
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  transition: 0.3s;
+}
+.product:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+}
+.product img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+.product h3 {
+  margin: 10px 0;
+}
+.product p {
+  margin-bottom: 10px;
+  color: #ccc;
+}
 button {
-  display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
+  padding: 8px 16px;
   border: none;
   border-radius: 6px;
+  cursor: pointer;
   background: linear-gradient(90deg, #ff8a00, #e52e71);
   color: #fff;
-  cursor: pointer;
-  font-size: 1rem;
   transition: 0.3s;
 }
 button:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 10px rgba(229,46,113,0.6);
 }
 
 footer {
