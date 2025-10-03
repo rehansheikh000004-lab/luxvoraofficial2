@@ -3,37 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Luxvora Gallery</title>
+  <title>Luxvoraofficial Portfolio</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- HEADER -->
-  <header>
-    <h1>Luxvora Gallery</h1>
-    <p>Aesthetic & Classy Moments</p>
+  <!-- HERO SECTION -->
+  <header class="hero">
+    <h1>Luxvoraofficial</h1>
+    <p>Web Developer • Innovator • Creator</p>
+    <a href="#projects" class="btn">View Projects</a>
+    <a href="#contact" class="btn">Contact Me</a>
   </header>
 
-  <!-- GALLERY -->
-  <section class="gallery">
-    <img src="https://picsum.photos/id/1011/500/350" alt="Gallery Image 1">
-    <img src="https://picsum.photos/id/1015/500/350" alt="Gallery Image 2">
-    <img src="https://picsum.photos/id/1016/500/350" alt="Gallery Image 3">
-    <img src="https://picsum.photos/id/1025/500/350" alt="Gallery Image 4">
-    <img src="https://picsum.photos/id/1035/500/350" alt="Gallery Image 5">
-    <img src="https://picsum.photos/id/1043/500/350" alt="Gallery Image 6">
+  <!-- ABOUT SECTION -->
+  <section id="about" class="about">
+    <h2>About Me</h2>
+    <p>I am Rehan Sheikh, a passionate full-stack web developer creating aesthetic and functional web projects. Skilled in HTML, CSS, JavaScript, and modern frontend frameworks.</p>
+    <div class="skills">
+      <span>HTML</span>
+      <span>CSS</span>
+      <span>JavaScript</span>
+      <span>React</span>
+    </div>
   </section>
 
-  <!-- LIGHTBOX -->
-  <div class="lightbox" id="lightbox">
-    <span class="close">&times;</span>
-    <img class="lightbox-img" id="lightbox-img">
-  </div>
+  <!-- PROJECTS SECTION -->
+  <section id="projects" class="projects">
+    <h2>My Projects</h2>
+    <div id="projects-container" class="projects-container">
+      <!-- Projects loaded dynamically via JS -->
+    </div>
+  </section>
+
+  <!-- BLOG SECTION -->
+  <section id="blog" class="blog">
+    <h2>Latest Blog Posts</h2>
+    <div id="posts-container" class="posts-container">
+      <!-- Blog posts loaded dynamically via JS -->
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section id="contact" class="contact">
+    <h2>Contact Me</h2>
+    <form>
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
 
   <!-- FOOTER -->
   <footer>
-    © 2025 Luxvoraofficial — Built by Rehan Sheikh
+    <p>© 2025 Luxvoraofficial — Built by Rehan Sheikh</p>
+    <button id="themeToggle">Toggle Dark/Light Mode</button>
   </footer>
 
+  <script src="projects.js"></script>
+  <script src="posts.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
