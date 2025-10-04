@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Space Shooter</title>
+  <style>
+    body {
+      display: flex; justify-content: center; align-items: center;
+      height: 100vh; margin: 0;
+      background: radial-gradient(circle at center, #0d0f14, #1c1f29);
+      font-family: sans-serif; color: white; flex-direction: column;
+    }
+    canvas {
+      background: black;
+      border: 3px solid #ff8a00;
+      border-radius: 10px;
+    }
+    h1 { margin-bottom: 10px; color: #ff8a00; }
+  </style>
+</head>
+<body>
+  <h1>Space Shooter</h1>
+  <canvas id="gameCanvas" width="400" height="600"></canvas>
+  <script>
+    const canvas=document.getElementById("gameCanvas");
+    const ctx=canvas.getContext("2d");
+
+    let ship={x:180,y:500,w:40,h:40,color:"cyan"};
+    let bullets=[];
+    let enemies=[];
+    let score=0, frame=0, gameOver=false;
+
+    function drawShip(){
+      ctx.fillStyle=ship.color;
+      ctx.fillRect(ship.x,ship.y,ship.w,ship.h);
+    }
+
+    function drawBullets(){
+      ctx.fillStyle="yellow";
+      bullets.forEach((b)=>{ ctx.fillRect(b.x,b.y,b.w,b.h); });
+    }
+
+    function drawEnemies(){
+      ctx.fillStyle="red";
+      enemies.forEach((e)=>{ ctx.fillRect(e.x,e.y,e.w,e.h); });
+    }
+
+    function update(){
+      if(gameOver) return;
+
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      drawShip();
+
+      // Bullets
+      bullets.forEach((b)=>{ b.y-=5; });
+      bullets=bullets.filter(b=>b.y>-10);
+      drawBullets();
+
+      // Enemies
+      if(frame%60===0){
+        let ex=Math.random()*(canvas.width-40);
+        enemies.push({x:ex,y:-40,w:40,h:40});
+      }
+      enemies.forEach((e)=>{ e.y+=3; });
+      drawEnemies();
+
+      // Collision detection
+      enemies.forEach((e,ei)=>{
+        bullets.forEach((b,bi)=>{
+          if(b.x<e.x+e.w && b.x+b.w>e.x && b.y<e.y+e.h && b.y+b.h>e.y){
+            enemies.splice(ei,1);
+            bullets.splice(bi,1);
+            score++;
+          }
+        });
+        if(ship.x<e.x+e.w && ship.x+ship.w>e.x && ship.y<e.y+e.h && ship.y+ship.h>e.y){
+          gameOver=true;
+          alert("Game Over! Final Score: "+score);
+          document.location.reload();
+        }
+      });
+
+      enemies=enemies.filter(e=>e.y<canvas.height);
+
+      // Score text
+      ctx.fillStyle="white";
+      ctx.font="20px Arial";
+      ctx.fillText("Score: "+score,10,25);
+
+      frame++;
+      requestAnimationFrame(update);
+    }
+
+    // Controls
+    document.addEventListener("keydown",(e)=>{
+      if(e.key==="ArrowLeft" && ship.x>0) ship.x-=20;
+      else if(e.key==="ArrowRight" && ship.x<canvas.width-ship.w) ship.x+=20;
+      else if(e.key===" "){ // space to shoot
+        bullets.push({x:ship.x+ship.w/2-2,y:ship.y,w:5,h:10});
+      }
+    });
+
+    update();
+  </script>
+</body>
+</html>
