@@ -2,59 +2,91 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Rock Paper Scissors</title>
+  <title>Flappy Bird Clone</title>
   <style>
     body {
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; height: 100vh;
-      background: #0d0f14; color: white; font-family: sans-serif;
+      display: flex; justify-content: center; align-items: center;
+      height: 100vh; background: #0d0f14; margin: 0;
+      font-family: sans-serif; color: white; flex-direction: column;
     }
-    h1 { margin-bottom: 20px; color: #ff8a00; }
-    .choices { display: flex; gap: 20px; margin: 20px 0; }
-    button {
-      padding: 10px 20px; font-size: 18px; border: none; cursor: pointer;
-      border-radius: 8px; background: #222; color: white;
-      transition: 0.2s;
+    canvas {
+      background: linear-gradient(to bottom, #87ceeb, #fff);
+      border: 3px solid #ff8a00;
+      border-radius: 10px;
     }
-    button:hover { background: #ff8a00; color: black; }
-    .result { margin-top: 20px; font-size: 22px; }
-    .score { margin-top: 10px; font-size: 18px; }
+    h1 { margin-bottom: 10px; color: #ff8a00; }
   </style>
 </head>
 <body>
-  <h1>Rock Paper Scissors</h1>
-  <div class="choices">
-    <button onclick="play('rock')">✊ Rock</button>
-    <button onclick="play('paper')">✋ Paper</button>
-    <button onclick="play('scissors')">✌️ Scissors</button>
-  </div>
-  <div class="result" id="result">Choose your move!</div>
-  <div class="score" id="score">You: 0 | Computer: 0</div>
-
+  <h1>Flappy Bird</h1>
+  <canvas id="gameCanvas" width="400" height="500"></canvas>
   <script>
-    let userScore = 0, computerScore = 0;
-    function play(userChoice){
-      const choices = ["rock","paper","scissors"];
-      const compChoice = choices[Math.floor(Math.random()*3)];
-      let result = "";
+    const canvas=document.getElementById("gameCanvas");
+    const ctx=canvas.getContext("2d");
 
-      if(userChoice === compChoice){
-        result = "It's a draw! Both chose " + userChoice;
-      } else if(
-        (userChoice==="rock" && compChoice==="scissors") ||
-        (userChoice==="paper" && compChoice==="rock") ||
-        (userChoice==="scissors" && compChoice==="paper")
-      ){
-        result = "You win! " + userChoice + " beats " + compChoice;
-        userScore++;
-      } else {
-        result = "You lose! " + compChoice + " beats " + userChoice;
-        computerScore++;
+    let bird={x:50,y:150,w:30,h:30,dy:0,gravity:0.6,jump:-10};
+    let pipes=[];
+    let frame=0, score=0, gameOver=false;
+
+    function drawBird(){
+      ctx.fillStyle="yellow";
+      ctx.fillRect(bird.x,bird.y,bird.w,bird.h);
+    }
+
+    function drawPipes(){
+      ctx.fillStyle="green";
+      pipes.forEach(p=>{
+        ctx.fillRect(p.x,0,p.w,p.top);
+        ctx.fillRect(p.x,p.top+p.gap,p.w,canvas.height-(p.top+p.gap));
+      });
+    }
+
+    function update(){
+      if(gameOver) return;
+
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      // Bird physics
+      bird.dy+=bird.gravity;
+      bird.y+=bird.dy;
+      drawBird();
+
+      // Pipes
+      if(frame%90===0){
+        let top=Math.random()*200+50;
+        pipes.push({x:canvas.width,w:40,top:top,gap:120});
+      }
+      pipes.forEach(p=>{p.x-=2;});
+      drawPipes();
+
+      // Collision
+      pipes.forEach(p=>{
+        if(bird.x<p.x+p.w && bird.x+bird.w>p.x && 
+           (bird.y<p.top || bird.y+bird.h>p.top+p.gap)){
+          gameOver=true; alert("Game Over! Score: "+score);
+          document.location.reload();
+        }
+        if(p.x+ p.w===bird.x) score++;
+      });
+
+      // Out of bounds
+      if(bird.y+bird.h>canvas.height || bird.y<0){
+        gameOver=true; alert("Game Over! Score: "+score);
+        document.location.reload();
       }
 
-      document.getElementById("result").textContent = result;
-      document.getElementById("score").textContent = `You: ${userScore} | Computer: ${computerScore}`;
+      ctx.fillStyle="black";
+      ctx.font="20px Arial";
+      ctx.fillText("Score: "+score,10,25);
+
+      frame++;
+      requestAnimationFrame(update);
     }
+
+    document.addEventListener("keydown",()=>{bird.dy=bird.jump;});
+    canvas.addEventListener("click",()=>{bird.dy=bird.jump;});
+
+    update();
   </script>
 </body>
 </html>
