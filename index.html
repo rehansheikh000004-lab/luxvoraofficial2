@@ -1,107 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Luxvora — Interactive Games</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Luxvoraofficial</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0d0f14, #1c1f29);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      background: rgba(0,0,0,0.7);
+      padding: 15px;
+    }
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+    }
+    nav ul li {
+      display: inline;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: #ff8a00;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    nav ul li a:hover {
+      color: #e52e71;
+    }
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      background: linear-gradient(to right, #ff8a00, #e52e71);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      color: #ccc;
+    }
+    .btn {
+      display: inline-block;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: white;
+      background: linear-gradient(to right, #ff8a00, #e52e71);
+      border-radius: 30px;
+      text-decoration: none;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 0 15px rgba(229,46,113,0.6);
+    }
+    .btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 25px rgba(255,138,0,0.9);
+    }
+    footer {
+      padding: 15px;
+      text-align: center;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
 <body>
-  <header class="top">
-    <div class="brand">
-      <h1>Luxvora Games</h1>
-      <p class="tag">Interactive • Aesthetic • Classy</p>
-    </div>
-    <div class="controls">
-      <button id="themeToggle">Toggle Theme</button>
-    </div>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="games.html">Games 🎮</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </nav>
   </header>
 
-  <main class="container">
-    <section class="grid" id="gamesGrid" aria-live="polite">
-      <!-- Cards populated by games.js -->
-    </section>
-  </main>
+  <section class="hero">
+    <h1>luxvoraofficial</h1>
+    <p>Web Developer • Innovator • Creator</p>
+    <a href="games.html" class="btn">🎮 Play Games Arcade</a>
+  </section>
 
-  <footer class="foot">
-    © 2025 Luxvoraofficial — Built by Rehan Sheikh
+  <footer>
+    © 2025 Luxvoraofficial | Built by Rehan Sheikh
   </footer>
-
-  <!-- Modal / Player -->
-  <div id="playerModal" class="modal" aria-hidden="true" role="dialog" aria-label="Game player">
-    <div class="modal-content">
-      <header class="modal-header">
-        <h3 id="modalTitle">Game</h3>
-        <button id="closeModal" aria-label="Close">✕</button>
-      </header>
-      <div class="iframe-wrap">
-        <iframe id="gameFrame" src="" frameborder="0" allow="autoplay; fullscreen"></iframe>
-      </div>
-      <div class="modal-footer">
-        <a id="openInNew" href="#" target="_blank" rel="noopener">Open in new tab</a>
-      </div>
-    </div>
-  </div>
-
-  <script src="games.js"></script>
-  <script>
-    // simple theme toggle
-    const themeToggle = document.getElementById('themeToggle');
-    themeToggle.addEventListener('click', () => document.body.classList.toggle('light'));
-
-    // populate cards
-    const grid = document.getElementById('gamesGrid');
-
-    function createCard(game) {
-      const a = document.createElement('article');
-      a.className = 'card';
-      a.innerHTML = `
-        <div class="thumb">${game.emoji || '🎮'}</div>
-        <h4>${game.title}</h4>
-        <p class="muted">${game.desc}</p>
-        <div class="actions">
-          <button class="play" data-src="${game.path}" data-title="${game.title}">Play</button>
-          <a class="code" href="${game.github}" target="_blank" rel="noopener">Code</a>
-        </div>
-      `;
-      return a;
-    }
-
-    // load from games array (games.js supplies `GAMES`)
-    GAMES.forEach(g => {
-      grid.appendChild(createCard(g));
-    });
-
-    // modal logic
-    const modal = document.getElementById('playerModal');
-    const frame = document.getElementById('gameFrame');
-    const modalTitle = document.getElementById('modalTitle');
-    const openInNew = document.getElementById('openInNew');
-    document.addEventListener('click', (e) => {
-      const btn = e.target.closest('button.play');
-      if (btn) {
-        const src = btn.dataset.src;
-        const title = btn.dataset.title;
-        frame.src = src;
-        modalTitle.textContent = title;
-        openInNew.href = src;
-        modal.classList.add('open');
-        modal.setAttribute('aria-hidden','false');
-      }
-    });
-
-    // close modal
-    const close = document.getElementById('closeModal');
-    close.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
-
-    function closeModal(){
-      modal.classList.remove('open');
-      modal.setAttribute('aria-hidden','true');
-      frame.src = '';
-      openInNew.href = '#';
-    }
-  </script>
 </body>
 </html>
