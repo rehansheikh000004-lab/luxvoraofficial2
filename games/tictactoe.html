@@ -1,1 +1,42 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tic Tac Toe</title>
+  <style>
+    body{display:flex;flex-direction:column;align-items:center;
+         justify-content:center;height:100vh;background:#0d0f14;color:white;font-family:sans-serif}
+    h1{margin-bottom:20px}
+    .board{display:grid;grid-template-columns:repeat(3,100px);grid-gap:5px}
+    .cell{width:100px;height:100px;display:flex;align-items:center;justify-content:center;
+          font-size:36px;background:#111;border:2px solid #444;cursor:pointer}
+    .cell.taken{cursor:not-allowed}
+    #status{margin-top:15px}
+  </style>
+</head>
+<body>
+  <h1>Tic Tac Toe</h1>
+  <div class="board" id="board"></div>
+  <div id="status">Player X's turn</div>
+  <script>
+    const board=document.getElementById("board");
+    let cells=[]; let turn="X"; let gameOver=false;
+    for(let i=0;i<9;i++){
+      const c=document.createElement("div");
+      c.className="cell"; board.appendChild(c); cells.push(c);
+      c.addEventListener("click",()=>move(i));
+    }
+    function move(i){
+      if(cells[i].textContent||gameOver) return;
+      cells[i].textContent=turn; cells[i].classList.add("taken");
+      if(checkWin(turn)){document.getElementById("status").textContent=turn+" wins!";gameOver=true;return;}
+      if(cells.every(c=>c.textContent)){document.getElementById("status").textContent="Draw!";return;}
+      turn=turn==="X"?"O":"X"; document.getElementById("status").textContent="Player "+turn+"'s turn";
+    }
+    function checkWin(p){
+      const wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+      return wins.some(w=>w.every(i=>cells[i].textContent===p));
+    }
+  </script>
+</body>
+</html>
