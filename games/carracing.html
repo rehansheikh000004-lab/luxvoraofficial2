@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Car Racing Game</title>
+  <style>
+    body {
+      display: flex; justify-content: center; align-items: center;
+      height: 100vh; margin: 0;
+      background: linear-gradient(to bottom, #0d0f14, #1c1f29);
+      font-family: sans-serif; color: white; flex-direction: column;
+    }
+    canvas {
+      background: #2c3e50;
+      border: 3px solid #ff8a00;
+      border-radius: 10px;
+    }
+    h1 { margin-bottom: 10px; color: #ff8a00; }
+  </style>
+</head>
+<body>
+  <h1>Car Racing</h1>
+  <canvas id="gameCanvas" width="400" height="600"></canvas>
+  <script>
+    const canvas=document.getElementById("gameCanvas");
+    const ctx=canvas.getContext("2d");
+
+    let car={x:180,y:500,w:40,h:80,color:"red"};
+    let enemies=[];
+    let score=0, gameOver=false, frame=0;
+
+    function drawCar(c){
+      ctx.fillStyle=c.color;
+      ctx.fillRect(c.x,c.y,c.w,c.h);
+    }
+
+    function update(){
+      if(gameOver) return;
+
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      // Draw road
+      ctx.fillStyle="gray";
+      ctx.fillRect(100,0,200,canvas.height);
+      ctx.strokeStyle="white";
+      ctx.setLineDash([20,20]);
+      ctx.beginPath();
+      ctx.moveTo(200,0);
+      ctx.lineTo(200,canvas.height);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Player car
+      drawCar(car);
+
+      // Spawn enemies
+      if(frame%100===0){
+        let enemyX=100+Math.floor(Math.random()*3)*60;
+        enemies.push({x:enemyX,y:-100,w:40,h:80,color:"blue"});
+      }
+
+      // Move enemies
+      enemies.forEach(e=>{
+        e.y+=4;
+        drawCar(e);
+
+        // Collision detection
+        if(car.x<e.x+e.w && car.x+car.w>e.x && car.y<e.y+e.h && car.y+car.h>e.y){
+          gameOver=true;
+          alert("Game Over! Score: "+score);
+          document.location.reload();
+        }
+
+        // Score
+        if(e.y>canvas.height) score++;
+      });
+
+      enemies=enemies.filter(e=>e.y<canvas.height);
+
+      // Score text
+      ctx.fillStyle="white";
+      ctx.font="20px Arial";
+      ctx.fillText("Score: "+score,10,25);
+
+      frame++;
+      requestAnimationFrame(update);
+    }
+
+    // Controls
+    document.addEventListener("keydown",(e)=>{
+      if(e.key==="ArrowLeft" && car.x>110) car.x-=60;
+      else if(e.key==="ArrowRight" && car.x<230) car.x+=60;
+    });
+
+    update();
+  </script>
+</body>
+</html>
