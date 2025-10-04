@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Doodle Jump</title>
+  <style>
+    body {
+      display: flex; justify-content: center; align-items: center;
+      height: 100vh; margin: 0;
+      background: linear-gradient(to bottom, #0d0f14, #1c1f29);
+      font-family: sans-serif; color: white; flex-direction: column;
+    }
+    canvas {
+      background: #87ceeb;
+      border: 3px solid #ff8a00;
+      border-radius: 10px;
+    }
+    h1 { margin-bottom: 10px; color: #ff8a00; }
+  </style>
+</head>
+<body>
+  <h1>Doodle Jump</h1>
+  <canvas id="gameCanvas" width="400" height="600"></canvas>
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    class Platform {
+      constructor(x, y, w, h){
+        this.x=x; this.y=y; this.w=w; this.h=h;
+      }
+      draw(){
+        ctx.fillStyle="#34eb5c";
+        ctx.fillRect(this.x,this.y,this.w,this.h);
+      }
+    }
+
+    let doodle = {
+      x: 200, y: 500, w: 40, h: 40, dy: 0, gravity: 0.3, jump: -10
+    };
+
+    let platforms = [];
+    let score=0, gameOver=false;
+
+    function initPlatforms(){
+      for(let i=0;i<6;i++){
+        let x=Math.random()*(canvas.width-60);
+        let y=canvas.height-100*i;
+        platforms.push(new Platform(x,y,60,10));
+      }
+    }
+
+    function drawDoodle(){
+      ctx.fillStyle="yellow";
+      ctx.fillRect(doodle.x,doodle.y,doodle.w,doodle.h);
+    }
+
+    function update(){
+      if(gameOver) return;
+
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      // Move doodle
+      doodle.dy+=doodle.gravity;
+      doodle.y+=doodle.dy;
+
+      // Bounce on platforms
+      platforms.forEach(p=>{
+        if(doodle.x+ doodle.w>p.x && doodle.x<p.x+p.w && doodle.y+doodle.h>p.y && doodle.y+doodle.h<p.y+p.h+10 && doodle.dy>0){
+          doodle.dy=doodle.jump;
+          score++;
+        }
+        p.draw();
+      });
+
+      drawDoodle();
+
+      // Scroll platforms
+      if(doodle.y<canvas.height/2){
+        doodle.y+=4;
+        platforms.forEach(p=>{p.y+=4;});
+      }
+
+      // Remove old platforms, add new ones
+      platforms=platforms.filter(p=>p.y<canvas.height);
+      while(platforms.length<6){
+        let x=Math.random()*(canvas.width-60);
+        let y=platforms[platforms.length-1].y-100;
+        platforms.push(new Platform(x,y,60,10));
+      }
+
+      // Check Game Over
+      if(doodle.y>canvas.height){
+        gameOver=true;
+        alert("Game Over! Final Score: "+score);
+        document.location.reload();
+      }
+
+      // Draw Score
+      ctx.fillStyle="black";
+      ctx.font="20px Arial";
+      ctx.fillText("Score: "+score,10,25);
+
+      requestAnimationFrame(update);
+    }
+
+    document.addEventListener("keydown",(e)=>{
+      if(e.key==="ArrowLeft") doodle.x-=30;
+      else if(e.key==="ArrowRight") doodle.x+=30;
+    });
+
+    initPlatforms();
+    update();
+  </script>
+</body>
+</html>
