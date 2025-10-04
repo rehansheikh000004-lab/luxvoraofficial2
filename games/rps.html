@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rock Paper Scissors</title>
+  <style>
+    body {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; height: 100vh;
+      background: #0d0f14; color: white; font-family: sans-serif;
+    }
+    h1 { margin-bottom: 20px; color: #ff8a00; }
+    .choices { display: flex; gap: 20px; margin: 20px 0; }
+    button {
+      padding: 10px 20px; font-size: 18px; border: none; cursor: pointer;
+      border-radius: 8px; background: #222; color: white;
+      transition: 0.2s;
+    }
+    button:hover { background: #ff8a00; color: black; }
+    .result { margin-top: 20px; font-size: 22px; }
+    .score { margin-top: 10px; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <h1>Rock Paper Scissors</h1>
+  <div class="choices">
+    <button onclick="play('rock')">✊ Rock</button>
+    <button onclick="play('paper')">✋ Paper</button>
+    <button onclick="play('scissors')">✌️ Scissors</button>
+  </div>
+  <div class="result" id="result">Choose your move!</div>
+  <div class="score" id="score">You: 0 | Computer: 0</div>
+
+  <script>
+    let userScore = 0, computerScore = 0;
+    function play(userChoice){
+      const choices = ["rock","paper","scissors"];
+      const compChoice = choices[Math.floor(Math.random()*3)];
+      let result = "";
+
+      if(userChoice === compChoice){
+        result = "It's a draw! Both chose " + userChoice;
+      } else if(
+        (userChoice==="rock" && compChoice==="scissors") ||
+        (userChoice==="paper" && compChoice==="rock") ||
+        (userChoice==="scissors" && compChoice==="paper")
+      ){
+        result = "You win! " + userChoice + " beats " + compChoice;
+        userScore++;
+      } else {
+        result = "You lose! " + compChoice + " beats " + userChoice;
+        computerScore++;
+      }
+
+      document.getElementById("result").textContent = result;
+      document.getElementById("score").textContent = `You: ${userScore} | Computer: ${computerScore}`;
+    }
+  </script>
+</body>
+</html>
