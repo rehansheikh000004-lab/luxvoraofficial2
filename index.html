@@ -1,17 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Luxvora Snake Game</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Luxvora — Interactive Games</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Luxvora Snake Game</h1>
-  <p>Eat the food! Swipe or use arrow keys to control the snake.</p>
-  <canvas id="gameCanvas" width="400" height="400"></canvas>
-  <p class="score">Score: <span id="score">0</span></p>
+  <header class="top">
+    <div class="brand">
+      <h1>Luxvora Games</h1>
+      <p class="tag">Interactive • Aesthetic • Classy</p>
+    </div>
+    <div class="controls">
+      <button id="themeToggle">Toggle Theme</button>
+    </div>
+  </header>
 
-  <script src="script.js"></script>
+  <main class="container">
+    <section class="grid" id="gamesGrid" aria-live="polite">
+      <!-- Cards populated by games.js -->
+    </section>
+  </main>
+
+  <footer class="foot">
+    © 2025 Luxvoraofficial — Built by Rehan Sheikh
+  </footer>
+
+  <!-- Modal / Player -->
+  <div id="playerModal" class="modal" aria-hidden="true" role="dialog" aria-label="Game player">
+    <div class="modal-content">
+      <header class="modal-header">
+        <h3 id="modalTitle">Game</h3>
+        <button id="closeModal" aria-label="Close">✕</button>
+      </header>
+      <div class="iframe-wrap">
+        <iframe id="gameFrame" src="" frameborder="0" allow="autoplay; fullscreen"></iframe>
+      </div>
+      <div class="modal-footer">
+        <a id="openInNew" href="#" target="_blank" rel="noopener">Open in new tab</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="games.js"></script>
+  <script>
+    // simple theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => document.body.classList.toggle('light'));
+
+    // populate cards
+    const grid = document.getElementById('gamesGrid');
+
+    function createCard(game) {
+      const a = document.createElement('article');
+      a.className = 'card';
+      a.innerHTML = `
+        <div class="thumb">${game.emoji || '🎮'}</div>
+        <h4>${game.title}</h4>
+        <p class="muted">${game.desc}</p>
+        <div class="actions">
+          <button class="play" data-src="${game.path}" data-title="${game.title}">Play</button>
+          <a class="code" href="${game.github}" target="_blank" rel="noopener">Code</a>
+        </div>
+      `;
+      return a;
+    }
+
+    // load from games array (games.js supplies `GAMES`)
+    GAMES.forEach(g => {
+      grid.appendChild(createCard(g));
+    });
+
+    // modal logic
+    const modal = document.getElementById('playerModal');
+    const frame = document.getElementById('gameFrame');
+    const modalTitle = document.getElementById('modalTitle');
+    const openInNew = document.getElementById('openInNew');
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('button.play');
+      if (btn) {
+        const src = btn.dataset.src;
+        const title = btn.dataset.title;
+        frame.src = src;
+        modalTitle.textContent = title;
+        openInNew.href = src;
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden','false');
+      }
+    });
+
+    // close modal
+    const close = document.getElementById('closeModal');
+    close.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    function closeModal(){
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden','true');
+      frame.src = '';
+      openInNew.href = '#';
+    }
+  </script>
 </body>
 </html>
