@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MusicMood | Luxvoraofficial</title>
+  <link rel="stylesheet" href="../style.css" />
+
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      text-align: center;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+      padding: 50px 20px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p {
+      opacity: 0.8;
+      margin-bottom: 40px;
+    }
+
+    .player-container {
+      background: var(--card-bg, rgba(255, 255, 255, 0.1));
+      border-radius: 25px;
+      padding: 30px;
+      max-width: 350px;
+      margin: auto;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(15px);
+    }
+
+    .cover {
+      width: 100%;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .song-title {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .artist {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-bottom: 20px;
+    }
+
+    audio {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    button {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      color: white;
+      font-size: 1.1rem;
+      padding: 10px 15px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px rgba(255,255,255,0.3);
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>🎧 MusicMood</h1>
+  <p>Find your rhythm — the Luxvora way.</p>
+
+  <div class="player-container">
+    <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=400&q=80"
+         alt="Album Cover" class="cover" id="cover">
+
+    <div class="song-title" id="title">Dreamscape</div>
+    <div class="artist" id="artist">Audio Library</div>
+
+    <audio id="audio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+    <div class="controls">
+      <button id="prev">⏮️</button>
+      <button id="play">▶️</button>
+      <button id="next">⏭️</button>
+    </div>
+  </div>
+
+  <!-- 🌗 Theme Toggle -->
+  <div class="theme-toggle">
+    <input type="checkbox" id="theme-switch" />
+    <label for="theme-switch" class="switch">
+      <span class="sun">☀️</span>
+      <span class="moon">🌙</span>
+    </label>
+  </div>
+
+  <script>
+    const songs = [
+      {
+        title: "Dreamscape",
+        artist: "Audio Library",
+        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+        cover: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        title: "Midnight Vibes",
+        artist: "ChillHop",
+        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+        cover: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        title: "Serene Sky",
+        artist: "LoFi Cloud",
+        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+        cover: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=400&q=80"
+      }
+    ];
+
+    const audio = document.getElementById("audio");
+    const playBtn = document.getElementById("play");
+    const prevBtn = document.getElementById("prev");
+    const nextBtn = document.getElementById("next");
+    const title = document.getElementById("title");
+    const artist = document.getElementById("artist");
+    const cover = document.getElementById("cover");
+
+    let currentSong = 0;
+    let isPlaying = false;
+
+    function loadSong(index) {
+      const song = songs[index];
+      title.textContent = song.title;
+      artist.textContent = song.artist;
+      audio.src = song.src;
+      cover.src = song.cover;
+    }
+
+    function playSong() {
+      audio.play();
+      playBtn.textContent = "⏸️";
+      isPlaying = true;
+    }
+
+    function pauseSong() {
+      audio.pause();
+      playBtn.textContent = "▶️";
+      isPlaying = false;
+    }
+
+    playBtn.addEventListener("click", () => {
+      isPlaying ? pauseSong() : playSong();
+    });
+
+    nextBtn.addEventListener("click", () => {
+      currentSong = (currentSong + 1) % songs.length;
+      loadSong(currentSong);
+      if (isPlaying) playSong();
+    });
+
+    prevBtn.addEventListener("click", () => {
+      currentSong = (currentSong - 1 + songs.length) % songs.length;
+      loadSong(currentSong);
+      if (isPlaying) playSong();
+    });
+
+    loadSong(currentSong);
+  </script>
+</body>
+</html>
