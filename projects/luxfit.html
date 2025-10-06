@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LuxFit | Fitness Tracker</title>
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 30px 20px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #f8ffae, #43c6ac);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p {
+      opacity: 0.8;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 25px;
+      padding: 25px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.3);
+      backdrop-filter: blur(12px);
+      width: 95%;
+      max-width: 420px;
+    }
+
+    .section {
+      margin-bottom: 25px;
+    }
+
+    .section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      color: #ffd369;
+      text-align: left;
+    }
+
+    input, button {
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      outline: none;
+      font-size: 1rem;
+    }
+
+    input {
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+
+    button {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    .list {
+      margin-top: 10px;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+
+    .item {
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 10px;
+      margin: 5px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 25px;
+      text-align: center;
+    }
+
+    .stat-box {
+      background: rgba(255,255,255,0.05);
+      padding: 15px;
+      border-radius: 15px;
+      width: 100px;
+    }
+
+    .stat-box h3 {
+      color: #ffd369;
+      margin-bottom: 5px;
+    }
+
+    .hydration-bar {
+      background: rgba(255,255,255,0.1);
+      border-radius: 20px;
+      overflow: hidden;
+      height: 12px;
+      margin-top: 5px;
+    }
+
+    .hydration-fill {
+      background: linear-gradient(135deg, #43c6ac, #f8ffae);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏋️ LuxFit</h1>
+  <p>Track your workouts and health goals — stay fit, stay Luxvora.</p>
+
+  <div class="container">
+    <!-- Workout Section -->
+    <div class="section">
+      <h2>Workout Tracker</h2>
+      <input type="text" id="exercise" placeholder="Exercise name (e.g. Pushups)" />
+      <input type="number" id="sets" placeholder="Sets" />
+      <input type="number" id="reps" placeholder="Reps" />
+      <input type="number" id="calories" placeholder="Calories burned" />
+      <button id="addWorkout">Add Workout</button>
+      <div class="list" id="workoutList"></div>
+    </div>
+
+    <!-- Health Section -->
+    <div class="section">
+      <h2>Health Tracker</h2>
+      <input type="number" id="steps" placeholder="Steps taken" />
+      <input type="number" id="water" placeholder="Water intake (ml)" />
+      <button id="updateHealth">Update Health</button>
+
+      <div class="stats">
+        <div class="stat-box">
+          <h3>Steps</h3>
+          <p id="stepsStat">0</p>
+        </div>
+        <div class="stat-box">
+          <h3>Water</h3>
+          <div class="hydration-bar">
+            <div class="hydration-fill" id="hydration"></div>
+          </div>
+          <small id="waterStat">0%</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ----- Workout Tracker -----
+    const exercise = document.getElementById("exercise");
+    const sets = document.getElementById("sets");
+    const reps = document.getElementById("reps");
+    const calories = document.getElementById("calories");
+    const workoutList = document.getElementById("workoutList");
+    const addWorkout = document.getElementById("addWorkout");
+
+    let workouts = JSON.parse(localStorage.getItem("luxfitWorkouts")) || [];
+
+    function updateWorkouts() {
+      workoutList.innerHTML = "";
+      workouts.forEach((w, i) => {
+        const div = document.createElement("div");
+        div.classList.add("item");
+        div.innerHTML = `
+          <span>${w.exercise} (${w.sets}x${w.reps})</span>
+          <span>${w.calories} kcal</span>
+        `;
+        div.addEventListener("dblclick", () => deleteWorkout(i));
+        workoutList.appendChild(div);
+      });
+      localStorage.setItem("luxfitWorkouts", JSON.stringify(workouts));
+    }
+
+    function deleteWorkout(i) {
+      workouts.splice(i, 1);
+      updateWorkouts();
+    }
+
+    addWorkout.addEventListener("click", () => {
+      const ex = exercise.value.trim();
+      const s = sets.value;
+      const r = reps.value;
+      const c = calories.value;
+      if (!ex || !s || !r || !c) return alert("Fill all workout fields!");
+      workouts.push({ exercise: ex, sets: s, reps: r, calories: c });
+      exercise.value = sets.value = reps.value = calories.value = "";
+      updateWorkouts();
+    });
+
+    // ----- Health Tracker -----
+    const stepsInput = document.getElementById("steps");
+    const waterInput = document.getElementById("water");
+    const stepsStat = document.getElementById("stepsStat");
+    const waterStat = document.getElementById("waterStat");
+    const hydration = document.getElementById("hydration");
+    const updateHealth = document.getElementById("updateHealth");
+
+    let health = JSON.parse(localStorage.getItem("luxfitHealth")) || { steps: 0, water: 0 };
+
+    function updateHealthUI() {
+      stepsStat.textContent = health.steps;
+      const percentage = Math.min((health.water / 3000) * 100, 100);
+      hydration.style.width = `${percentage}%`;
+      waterStat.textContent = `${percentage.toFixed(0)}%`;
+      localStorage.setItem("luxfitHealth", JSON.stringify(health));
+    }
+
+    updateHealth.addEventListener("click", () => {
+      const s = parseInt(stepsInput.value);
+      const w = parseInt(waterInput.value);
+      if (!isNaN(s)) health.steps += s;
+      if (!isNaN(w)) health.water += w;
+      updateHealthUI();
+      stepsInput.value = waterInput.value = "";
+    });
+
+    updateWorkouts();
+    updateHealthUI();
+  </script>
+</body>
+</html>
