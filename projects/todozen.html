@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To-Do Zen | Luxvoraofficial</title>
+  <link rel="stylesheet" href="../style.css" />
+
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      text-align: center;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+      padding: 60px 20px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #84fab0, #8fd3f4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p {
+      color: var(--text);
+      opacity: 0.8;
+      margin-bottom: 30px;
+    }
+
+    .todo-container {
+      max-width: 400px;
+      margin: auto;
+      background: var(--card-bg, rgba(255,255,255,0.1));
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.15);
+      backdrop-filter: blur(10px);
+    }
+
+    .input-group {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 10px 0 0 10px;
+      outline: none;
+      background: rgba(255,255,255,0.2);
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    button.add-btn {
+      background: linear-gradient(135deg, #43cea2, #185a9d);
+      border: none;
+      color: white;
+      font-weight: bold;
+      padding: 10px 15px;
+      border-radius: 0 10px 10px 0;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button.add-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      background: rgba(255,255,255,0.08);
+      margin: 10px 0;
+      padding: 10px 15px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      color: #ff6b6b;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>🪷 To-Do Zen</h1>
+  <p>Organize your thoughts — the Luxvora way.</p>
+
+  <div class="todo-container">
+    <div class="input-group">
+      <input type="text" id="task-input" placeholder="Add a new task..." />
+      <button class="add-btn" id="add-task">+</button>
+    </div>
+    <ul id="task-list"></ul>
+  </div>
+
+  <!-- 🌗 Luxvora Gradient Theme Toggle -->
+  <div class="theme-toggle">
+    <input type="checkbox" id="theme-switch" />
+    <label for="theme-switch" class="switch">
+      <span class="sun">☀️</span>
+      <span class="moon">🌙</span>
+    </label>
+  </div>
+
+  <script>
+    // 🌿 To-Do Zen Logic
+    const taskInput = document.getElementById("task-input");
+    const addTaskBtn = document.getElementById("add-task");
+    const taskList = document.getElementById("task-list");
+
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    function renderTasks() {
+      taskList.innerHTML = "";
+      tasks.forEach((task, index) => {
+        const li = document.createElement("li");
+        li.textContent = task.text;
+        if (task.completed) li.classList.add("completed");
+
+        li.addEventListener("click", () => {
+          task.completed = !task.completed;
+          saveTasks();
+          renderTasks();
+        });
+
+        const delBtn = document.createElement("button");
+        delBtn.innerHTML = "✕";
+        delBtn.className = "delete-btn";
+        delBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          tasks.splice(index, 1);
+          saveTasks();
+          renderTasks();
+        });
+
+        li.appendChild(delBtn);
+        taskList.appendChild(li);
+      });
+    }
+
+    function saveTasks() {
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    addTaskBtn.addEventListener("click", () => {
+      const text = taskInput.value.trim();
+      if (text) {
+        tasks.push({ text, completed: false });
+        saveTasks();
+        renderTasks();
+        taskInput.value = "";
+      }
+    });
+
+    taskInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") addTaskBtn.click();
+    });
+
+    renderTasks();
+  </script>
+</body>
+</html>
