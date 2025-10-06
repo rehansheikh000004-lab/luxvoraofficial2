@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocusFlow | Luxvoraofficial</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    body {
+      text-align: center;
+      padding: 50px 20px;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.4s, color 0.4s;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #a6c0fe, #f68084);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .timer-container {
+      margin: 50px auto;
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 300px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.15);
+      backdrop-filter: blur(15px);
+    }
+
+    .time {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    button {
+      border: none;
+      background: var(--accent);
+      color: white;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(255,255,255,0.2);
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🕒 FocusFlow</h1>
+    <p>Stay productive — one Pomodoro at a time.</p>
+  </header>
+
+  <div class="timer-container">
+    <div class="time" id="time">25:00</div>
+    <div class="buttons">
+      <button id="start">Start</button>
+      <button id="reset">Reset</button>
+    </div>
+  </div>
+
+  <!-- 🌗 Luxvora Gradient Theme Toggle -->
+  <div class="theme-toggle">
+    <input type="checkbox" id="theme-switch" />
+    <label for="theme-switch" class="switch">
+      <span class="sun">☀️</span>
+      <span class="moon">🌙</span>
+    </label>
+  </div>
+
+  <script src="../script.js"></script>
+  <script>
+    // Pomodoro Timer Logic
+    const timeDisplay = document.getElementById("time");
+    const startBtn = document.getElementById("start");
+    const resetBtn = document.getElementById("reset");
+
+    let time = 25 * 60;
+    let timer;
+    let running = false;
+
+    function updateDisplay() {
+      const minutes = Math.floor(time / 60);
+      const seconds = time % 60;
+      timeDisplay.textContent = \`\${minutes.toString().padStart(2, "0")}:\${seconds.toString().padStart(2, "0")}\`;
+    }
+
+    startBtn.addEventListener("click", () => {
+      if (!running) {
+        running = true;
+        timer = setInterval(() => {
+          if (time > 0) {
+            time--;
+            updateDisplay();
+          } else {
+            clearInterval(timer);
+            alert("Time’s up! Take a break 🌿");
+            running = false;
+          }
+        }, 1000);
+      }
+    });
+
+    resetBtn.addEventListener("click", () => {
+      clearInterval(timer);
+      running = false;
+      time = 25 * 60;
+      updateDisplay();
+    });
+
+    updateDisplay();
+  </script>
+</body>
+</html>
