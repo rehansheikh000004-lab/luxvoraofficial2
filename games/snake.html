@@ -1,115 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Snake Game | Luxvoraofficial</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snake Game | Luxvora Arcade</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #0d0f14, #1c1f29);
-      color: white;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      text-align: center;
-    }
-    header {
-      background: rgba(0,0,0,0.7);
-      padding: 15px;
-    }
-    nav ul {
-      list-style: none;
-      margin: 0;
       padding: 0;
       display: flex;
+      flex-direction: column;
       justify-content: center;
-      gap: 25px;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      font-family: "Poppins", sans-serif;
+      color: white;
     }
-    nav ul li a {
-      text-decoration: none;
-      color: #ff8a00;
-      font-weight: bold;
-      transition: color 0.3s;
-    }
-    nav ul li a:hover {
-      color: #e52e71;
-    }
+
     h1 {
-      margin: 20px 0;
-      font-size: 2rem;
-      background: linear-gradient(to right, #ff8a00, #e52e71);
+      margin-bottom: 10px;
+      font-size: 1.8rem;
+      background: linear-gradient(45deg, #ff8a00, #e52e71);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .game-container {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+
     canvas {
-      background: #111;
-      border: 2px solid #ff8a00;
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
       border-radius: 10px;
-      box-shadow: 0 0 15px rgba(229,46,113,0.6);
     }
-    footer {
-      padding: 15px;
+
+    .controls {
       text-align: center;
-      color: #aaa;
+      margin-top: 20px;
+    }
+
+    .controls button {
+      font-size: 1.6rem;
+      background: linear-gradient(135deg, #ff8a00, #e52e71);
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      color: white;
+      margin: 8px;
+      cursor: pointer;
+      box-shadow: 0 0 12px rgba(255, 138, 0, 0.5);
+      transition: transform 0.1s, box-shadow 0.2s;
+    }
+
+    .controls button:active {
+      transform: scale(0.9);
+      box-shadow: 0 0 20px rgba(229, 46, 113, 0.7);
+    }
+
+    footer {
+      margin-top: 20px;
       font-size: 0.9rem;
+      opacity: 0.7;
     }
   </style>
 </head>
 <body>
-  <header>
-    <nav>
-      <ul>
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="../projects.html">Projects</a></li>
-        <li><a href="../games.html">Games 🎮</a></li>
-        <li><a href="../about.html">About</a></li>
-      </ul>
-    </nav>
-  </header>
-
   <h1>🐍 Snake Game</h1>
+  <canvas id="game" width="300" height="300"></canvas>
 
-  <div class="game-container">
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
+  <!-- On-screen mobile controls -->
+  <div class="controls">
+    <div>
+      <button id="up">⬆️</button>
+    </div>
+    <div>
+      <button id="left">⬅️</button>
+      <button id="down">⬇️</button>
+      <button id="right">➡️</button>
+    </div>
   </div>
 
-  <footer>
-    © 2025 Luxvoraofficial | Built by Rehan Sheikh
-  </footer>
+  <footer>Luxvora Arcade | Built by Rehan Sheikh</footer>
 
   <script>
-    const canvas = document.getElementById("gameCanvas");
+    const canvas = document.getElementById("game");
     const ctx = canvas.getContext("2d");
 
-    const box = 20;
-    let snake = [{ x: 9 * box, y: 10 * box }];
-    let direction;
+    const box = 15;
+    let snake = [];
+    snake[0] = { x: 9 * box, y: 10 * box };
     let food = {
-      x: Math.floor(Math.random() * 19) * box,
-      y: Math.floor(Math.random() * 19) * box
+      x: Math.floor(Math.random() * 19 + 1) * box,
+      y: Math.floor(Math.random() * 19 + 3) * box
     };
+    let score = 0;
+    let direction;
 
-    document.addEventListener("keydown", e => {
-      if (e.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
-      if (e.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
-      if (e.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
-      if (e.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
+    // Keyboard controls
+    document.addEventListener("keydown", directionControl);
+    function directionControl(e) {
+      if (e.keyCode == 37 && direction != "RIGHT") direction = "LEFT";
+      else if (e.keyCode == 38 && direction != "DOWN") direction = "UP";
+      else if (e.keyCode == 39 && direction != "LEFT") direction = "RIGHT";
+      else if (e.keyCode == 40 && direction != "UP") direction = "DOWN";
+    }
+
+    // Mobile button controls
+    document.getElementById("up").addEventListener("click", () => {
+      if (direction !== "DOWN") direction = "UP";
     });
+    document.getElementById("down").addEventListener("click", () => {
+      if (direction !== "UP") direction = "DOWN";
+    });
+    document.getElementById("left").addEventListener("click", () => {
+      if (direction !== "RIGHT") direction = "LEFT";
+    });
+    document.getElementById("right").addEventListener("click", () => {
+      if (direction !== "LEFT") direction = "RIGHT";
+    });
+
+    function collision(head, array) {
+      for (let i = 0; i < array.length; i++) {
+        if (head.x == array[i].x && head.y == array[i].y) return true;
+      }
+      return false;
+    }
 
     function draw() {
       ctx.fillStyle = "#111";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, 300, 300);
 
       for (let i = 0; i < snake.length; i++) {
-        ctx.fillStyle = i === 0 ? "#ff8a00" : "#e52e71";
+        ctx.fillStyle = i == 0 ? "#e52e71" : "#ff8a00";
         ctx.fillRect(snake[i].x, snake[i].y, box, box);
+
+        ctx.strokeStyle = "#222";
+        ctx.strokeRect(snake[i].x, snake[i].y, box, box);
       }
 
       ctx.fillStyle = "#fff";
@@ -118,15 +143,16 @@
       let snakeX = snake[0].x;
       let snakeY = snake[0].y;
 
-      if (direction === "LEFT") snakeX -= box;
-      if (direction === "UP") snakeY -= box;
-      if (direction === "RIGHT") snakeX += box;
-      if (direction === "DOWN") snakeY += box;
+      if (direction == "LEFT") snakeX -= box;
+      if (direction == "UP") snakeY -= box;
+      if (direction == "RIGHT") snakeX += box;
+      if (direction == "DOWN") snakeY += box;
 
-      if (snakeX === food.x && snakeY === food.y) {
+      if (snakeX == food.x && snakeY == food.y) {
+        score++;
         food = {
-          x: Math.floor(Math.random() * 19) * box,
-          y: Math.floor(Math.random() * 19) * box
+          x: Math.floor(Math.random() * 19 + 1) * box,
+          y: Math.floor(Math.random() * 19 + 3) * box
         };
       } else {
         snake.pop();
@@ -134,17 +160,24 @@
 
       let newHead = { x: snakeX, y: snakeY };
 
-      // Game over conditions
+      // Game Over
       if (
-        snakeX < 0 || snakeY < 0 ||
-        snakeX >= canvas.width || snakeY >= canvas.height ||
-        snake.some(seg => seg.x === newHead.x && seg.y === newHead.y)
+        snakeX < 0 ||
+        snakeY < 0 ||
+        snakeX >= 300 ||
+        snakeY >= 300 ||
+        collision(newHead, snake)
       ) {
         clearInterval(game);
-        alert("Game Over!");
+        alert("Game Over! Score: " + score);
+        location.reload();
       }
 
       snake.unshift(newHead);
+
+      ctx.fillStyle = "#fff";
+      ctx.font = "16px Poppins";
+      ctx.fillText("Score: " + score, 10, 20);
     }
 
     let game = setInterval(draw, 100);
