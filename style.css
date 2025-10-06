@@ -169,3 +169,69 @@ body.light{
   color: #ffb88a;
   letter-spacing: 0.5px;
 }
+
+/* 🌗 THEME TOGGLE STYLES */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 25px;
+  z-index: 999;
+}
+
+.switch {
+  background: var(--card-bg);
+  border-radius: 30px;
+  width: 60px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+}
+
+.sun, .moon {
+  font-size: 16px;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+/* 🌞 Light mode default */
+:root {
+  --bg: #f7f7f7;
+  --text: #121212;
+  --card-bg: #fff;
+}
+
+/* 🌙 Dark mode */
+body.dark {
+  --bg: #0b0b0b;
+  --text: #eaeaea;
+  --card-bg: #1a1a1a;
+}
+
+/* Apply theme colors */
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.4s, color 0.4s;
+}
+
+/* Toggle animation */
+input:checked + .switch {
+  background: var(--card-bg);
+}
+
+input:checked + .switch .sun {
+  opacity: 0.3;
+}
+
+input:checked + .switch .moon {
+  opacity: 1;
+}
