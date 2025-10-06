@@ -97,17 +97,3 @@ draw();
     localStorage.setItem("theme", "light");
   }
 });
-
-// 🌙 Luxvora Gradient Theme Toggle
-const themeSwitch = document.getElementById("theme-switch");
-const currentTheme = localStorage.getItem("theme");
-
-if (currentTheme === "dark") {
-  document.body.classList.add("dark");
-  themeSwitch.checked = true;
-}
-
-themeSwitch.addEventListener("change", () => {
-  document.body.classList.toggle("dark", themeSwitch.checked);
-  localStorage.setItem("theme", themeSwitch.checked ? "dark" : "light");
-});
