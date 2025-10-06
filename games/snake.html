@@ -16,6 +16,7 @@
       background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
       font-family: "Poppins", sans-serif;
       color: white;
+      text-align: center;
     }
 
     h1 {
@@ -56,9 +57,27 @@
       box-shadow: 0 0 20px rgba(229, 46, 113, 0.7);
     }
 
+    .back-btn {
+      margin-top: 25px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 25px;
+      background: linear-gradient(90deg, #e52e71, #ff8a00);
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 0 12px rgba(255, 138, 0, 0.4);
+      transition: transform 0.2s;
+    }
+
+    .back-btn:hover {
+      transform: scale(1.05);
+    }
+
     footer {
-      margin-top: 20px;
-      font-size: 0.9rem;
+      margin-top: 15px;
+      font-size: 0.85rem;
       opacity: 0.7;
     }
   </style>
@@ -78,6 +97,9 @@
       <button id="right">➡️</button>
     </div>
   </div>
+
+  <!-- Back Button -->
+  <button class="back-btn" onclick="window.location.href='../games.html'">← Back to Games</button>
 
   <footer>Luxvora Arcade | Built by Rehan Sheikh</footer>
 
@@ -132,7 +154,6 @@
       for (let i = 0; i < snake.length; i++) {
         ctx.fillStyle = i == 0 ? "#e52e71" : "#ff8a00";
         ctx.fillRect(snake[i].x, snake[i].y, box, box);
-
         ctx.strokeStyle = "#222";
         ctx.strokeRect(snake[i].x, snake[i].y, box, box);
       }
