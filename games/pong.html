@@ -1,138 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Pong Game</title>
-  <style>
-    body {
-      display: flex; justify-content: center; align-items: center;
-      height: 100vh; background: #0d0f14; margin: 0;
-      font-family: sans-serif; color: white; flex-direction: column;
-    }
-    canvas {
-      background: black;
-      border: 3px solid #ff8a00;
-      border-radius: 10px;
-      display: block;
-    }
-    h1 { margin-bottom: 10px; color: #ff8a00; }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pong Game — Luxvora Arcade</title>
+  <link rel="stylesheet" href="pong.css" />
 </head>
 <body>
-  <h1>Pong Game</h1>
-  <canvas id="pong" width="600" height="400"></canvas>
-  <script>
-    const canvas = document.getElementById("pong");
-    const ctx = canvas.getContext("2d");
+  <div class="game-container">
+    <canvas id="pongCanvas" width="800" height="500"></canvas>
 
-    const paddleWidth = 10, paddleHeight = 80;
-    let leftPaddle = {x: 10, y: canvas.height/2 - paddleHeight/2, dy: 0};
-    let rightPaddle = {x: canvas.width-20, y: canvas.height/2 - paddleHeight/2, dy: 0};
-    let ball = {x: canvas.width/2, y: canvas.height/2, size: 10, dx: 4, dy: 4};
+    <!-- Mobile Controls -->
+    <div class="mobile-controls">
+      <button id="leftBtn">⬅️</button>
+      <button id="rightBtn">➡️</button>
+    </div>
+  </div>
 
-    let scoreLeft = 0, scoreRight = 0;
-
-    function drawRect(x,y,w,h,color){
-      ctx.fillStyle = color;
-      ctx.fillRect(x,y,w,h);
-    }
-
-    function drawCircle(x,y,r,color){
-      ctx.fillStyle=color;
-      ctx.beginPath();
-      ctx.arc(x,y,r,0,Math.PI*2);
-      ctx.closePath();
-      ctx.fill();
-    }
-
-    function drawText(text,x,y,color){
-      ctx.fillStyle=color;
-      ctx.font="30px Arial";
-      ctx.fillText(text,x,y);
-    }
-
-    function draw(){
-      drawRect(0,0,canvas.width,canvas.height,"black");
-
-      // Middle line
-      for(let i=0;i<canvas.height;i+=20){
-        drawRect(canvas.width/2-1,i,2,10,"white");
-      }
-
-      drawText(scoreLeft, canvas.width/4, 50,"white");
-      drawText(scoreRight, 3*canvas.width/4, 50,"white");
-
-      drawRect(leftPaddle.x,leftPaddle.y,paddleWidth,paddleHeight,"white");
-      drawRect(rightPaddle.x,rightPaddle.y,paddleWidth,paddleHeight,"white");
-      drawCircle(ball.x,ball.y,ball.size,"#ff8a00");
-    }
-
-    function move(){
-      leftPaddle.y += leftPaddle.dy;
-      rightPaddle.y += rightPaddle.dy;
-
-      if(leftPaddle.y<0) leftPaddle.y=0;
-      if(leftPaddle.y+paddleHeight>canvas.height) leftPaddle.y=canvas.height-paddleHeight;
-      if(rightPaddle.y<0) rightPaddle.y=0;
-      if(rightPaddle.y+paddleHeight>canvas.height) rightPaddle.y=canvas.height-paddleHeight;
-
-      ball.x += ball.dx;
-      ball.y += ball.dy;
-
-      if(ball.y-ball.size<0 || ball.y+ball.size>canvas.height){
-        ball.dy *= -1;
-      }
-
-      // Left paddle collision
-      if(ball.x-ball.size < leftPaddle.x+paddleWidth && 
-         ball.y>leftPaddle.y && ball.y<leftPaddle.y+paddleHeight){
-        ball.dx *= -1;
-      }
-
-      // Right paddle collision
-      if(ball.x+ball.size > rightPaddle.x && 
-         ball.y>rightPaddle.y && ball.y<rightPaddle.y+paddleHeight){
-        ball.dx *= -1;
-      }
-
-      // Score check
-      if(ball.x<0){
-        scoreRight++;
-        resetBall();
-      } else if(ball.x>canvas.width){
-        scoreLeft++;
-        resetBall();
-      }
-    }
-
-    function resetBall(){
-      ball.x=canvas.width/2;
-      ball.y=canvas.height/2;
-      ball.dx *= -1;
-      ball.dy = 4 * (Math.random()>0.5 ? 1 : -1);
-    }
-
-    function update(){
-      move();
-      draw();
-    }
-
-    function game(){
-      update();
-    }
-
-    setInterval(game,1000/60);
-
-    document.addEventListener("keydown",e=>{
-      if(e.key==="w") leftPaddle.dy=-5;
-      if(e.key==="s") leftPaddle.dy=5;
-      if(e.key==="ArrowUp") rightPaddle.dy=-5;
-      if(e.key==="ArrowDown") rightPaddle.dy=5;
-    });
-    document.addEventListener("keyup",e=>{
-      if(e.key==="w"||e.key==="s") leftPaddle.dy=0;
-      if(e.key==="ArrowUp"||e.key==="ArrowDown") rightPaddle.dy=0;
-    });
-  </script>
+  <script src="pong.js"></script>
 </body>
 </html>
