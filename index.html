@@ -7,34 +7,24 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      margin: 0;
-      overflow: hidden;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e);
+      overflow: hidden;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
       background-size: 400% 400%;
-      animation: gradientMove 12s ease infinite;
+      animation: bgShift 10s ease infinite;
       color: #fff;
+      text-align: center;
+      height: 100vh;
     }
 
-    @keyframes gradientMove {
+    @keyframes bgShift {
       0% {background-position: 0% 50%;}
       50% {background-position: 100% 50%;}
       100% {background-position: 0% 50%;}
     }
 
-    /* ✨ Cinematic fade-in */
-    .fade-in {
-      opacity: 0;
-      animation: fadeIn 2s ease forwards;
-    }
-
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(20px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-
-    /* 💫 Stars */
     canvas {
       position: absolute;
       top: 0;
@@ -42,69 +32,72 @@
       z-index: 0;
     }
 
-    /* 🌟 Content */
     .content {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
+      position: relative;
       z-index: 2;
+      top: 45%;
+      transform: translateY(-50%);
+      animation: fadeIn 2s ease forwards;
     }
 
-    .logo {
-      font-size: 2rem;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-size: 2.2rem;
       font-weight: 700;
       background: linear-gradient(90deg, #ff8a00, #e52e71);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      letter-spacing: 1.5px;
+      margin-bottom: 10px;
     }
 
-    .subtitle {
-      margin-top: 10px;
-      font-weight: 400;
-      color: rgba(255, 255, 255, 0.8);
+    p {
+      color: rgba(255,255,255,0.8);
+      font-size: 1rem;
+      margin-bottom: 20px;
     }
 
-    .btn {
-      display: inline-block;
-      margin-top: 25px;
-      padding: 10px 25px;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(255,255,255,0.05);
-      color: #fff;
+    .btns {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    a {
       text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
+      color: #fff;
+      padding: 10px 20px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
       backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
     }
 
-    .btn:hover {
+    a:hover {
       background: linear-gradient(90deg, #ff8a00, #e52e71);
+      box-shadow: 0 0 15px rgba(229,46,113,0.4);
       transform: translateY(-3px);
-      box-shadow: 0 0 20px rgba(229, 46, 113, 0.4);
     }
 
-    /* 🎶 Music Toggle */
-    .music-btn {
+    .music {
       position: absolute;
-      bottom: 20px;
-      right: 20px;
-      z-index: 3;
+      bottom: 15px;
+      right: 15px;
       background: rgba(255,255,255,0.1);
       padding: 8px 12px;
-      border-radius: 8px;
-      cursor: pointer;
+      border-radius: 10px;
       font-size: 14px;
-      color: #fff;
+      cursor: pointer;
       border: 1px solid rgba(255,255,255,0.2);
-      backdrop-filter: blur(6px);
-      transition: all 0.3s ease;
+      z-index: 3;
+      transition: 0.3s;
     }
 
-    .music-btn:hover {
+    .music:hover {
       background: rgba(255,255,255,0.2);
     }
   </style>
@@ -112,64 +105,69 @@
 <body>
   <canvas id="stars"></canvas>
 
-  <div class="content fade-in">
-    <div class="logo">Luxvora Universe</div>
-    <div class="subtitle">Explore. Create. Evolve.</div>
-    <a href="projects.html" class="btn">Enter Universe</a>
+  <div class="content">
+    <h1>Luxvora Universe</h1>
+    <p>Explore. Create. Evolve.</p>
+    <div class="btns">
+      <a href="games.html">Games</a>
+      <a href="projects.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="https://instagram.com/luxvoraofficial" target="_blank">Instagram</a>
+    </div>
   </div>
 
-  <div class="music-btn" id="musicToggle">🎵 Play Music</div>
+  <div class="music" id="musicBtn">🎵 Play Music</div>
 
-  <audio id="bgMusic" loop>
+  <audio id="music" loop>
     <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_08a2cbac4b.mp3?filename=calm-space-ambient-110856.mp3" type="audio/mpeg">
   </audio>
 
   <script>
-    // 🌠 Stars Background
-    const canvas = document.getElementById("stars");
-    const ctx = canvas.getContext("2d");
-    let stars = [];
+    // 🌌 Stars
+    const c = document.getElementById("stars");
+    const ctx = c.getContext("2d");
+    let w, h, stars = [];
 
     function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      stars = Array.from({ length: 150 }, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 2,
-        speed: 0.1 + Math.random() * 0.3
+      w = c.width = window.innerWidth;
+      h = c.height = window.innerHeight;
+      stars = Array.from({ length: 100 }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 2,
+        s: Math.random() * 0.5
       }));
     }
 
-    window.addEventListener("resize", resize);
-    resize();
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "white";
-      stars.forEach(s => {
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = "#fff";
+      stars.forEach(star => {
         ctx.beginPath();
-        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.arc(star.x, star.y, star.r, 0, 2 * Math.PI);
         ctx.fill();
-        s.y += s.speed;
-        if (s.y > canvas.height) s.y = 0;
+        star.y += star.s;
+        if (star.y > h) star.y = 0;
       });
-      requestAnimationFrame(animate);
+      requestAnimationFrame(draw);
     }
-    animate();
+
+    resize();
+    draw();
+    window.addEventListener("resize", resize);
 
     // 🎶 Music
-    const music = document.getElementById("bgMusic");
-    const toggle = document.getElementById("musicToggle");
+    const music = document.getElementById("music");
+    const btn = document.getElementById("musicBtn");
     let playing = false;
 
-    toggle.onclick = () => {
-      if (!playing) {
-        music.play();
-        toggle.textContent = "⏸ Pause Music";
-      } else {
+    btn.onclick = () => {
+      if (playing) {
         music.pause();
-        toggle.textContent = "🎵 Play Music";
+        btn.textContent = "🎵 Play Music";
+      } else {
+        music.play();
+        btn.textContent = "⏸ Pause Music";
       }
       playing = !playing;
     };
