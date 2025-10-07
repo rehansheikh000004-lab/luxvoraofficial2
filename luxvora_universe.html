@@ -1,343 +1,253 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Luxvora Universe — Luxvoraofficial</title>
-  <meta name="description" content="Luxvora Universe — explore Games, Projects, and more in a classy, interactive 3D landing." />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luxvora Universe — Explore the Realm</title>
   <style>
-    /* Minimal reset + luxe background */
-    :root{
-      --accent1:#ff8a00;
-      --accent2:#e52e71;
-      --bg1:#070710;
-      --bg2:#0b0e25;
-    }
-    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial}
-    body{
-      background: radial-gradient(800px 400px at 10% 15%, rgba(229,138,0,0.06), transparent 6%),
-                  radial-gradient(600px 300px at 90% 85%, rgba(229,46,113,0.05), transparent 6%),
-                  linear-gradient(180deg,var(--bg1) 0%, var(--bg2) 60%, #0b0710 100%);
-      color:#eaeaf2;
-      overflow:hidden;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
+    html, body {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: "Poppins", sans-serif;
+      color: #fff;
+      background: radial-gradient(circle at 30% 30%, #0d0d18, #000);
     }
 
-    /* fullscreen canvas container */
-    #app {
-      position:fixed; inset:0; display:flex; flex-direction:column;
-      align-items:center; justify-content:center;
+    /* ✨ Animated gradient background */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, #ff8a00, #e52e71, #48c6ef, #a86bff);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      opacity: 0.05;
+      z-index: -1;
     }
-    /* top-left title */
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ✨ Brand Logo */
     .brand {
-      position: absolute; left: 28px; top: 18px; z-index: 30;
-      display:flex; align-items:center; gap:10px;
-      pointer-events:none;
-    }
-    .brand .logo {
-      width:38px; height:38px; border-radius:10px;
-      background: linear-gradient(135deg,var(--accent1),var(--accent2));
-      box-shadow: 0 6px 20px rgba(229,46,113,0.18);
-    }
-    .brand .title {
-      font-weight:700; font-size:16px; letter-spacing:0.3px;
-      background: linear-gradient(90deg,var(--accent1),var(--accent2));
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 10;
     }
 
-    /* bottom-center UI */
+    .logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #ff8a00, #e52e71);
+      box-shadow: 0 0 25px rgba(229,46,113,0.4);
+    }
+
+    .title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+    }
+
+    /* ✨ Canvas full screen */
+    canvas {
+      display: block;
+    }
+
+    /* ✨ UI Buttons */
     .ui {
-      position: absolute; left:50%; transform:translateX(-50%); bottom: 26px;
-      z-index: 30; text-align:center; pointer-events:auto;
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 10;
     }
-    .ui .hint {
-      font-size:14px; color:rgba(234,234,242,0.8);
-      margin-bottom:10px;
-      opacity:0.95;
-    }
-    .ui .links { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
-    .ui .links a {
-      text-decoration:none; padding:10px 14px; border-radius:10px;
-      background: rgba(255,255,255,0.04); color: #fff; font-weight:600;
-      backdrop-filter: blur(6px); border:1px solid rgba(255,255,255,0.04);
-      transition: transform .16s, background .18s;
-    }
-    .ui .links a:hover { transform:translateY(-4px); background: linear-gradient(90deg,var(--accent1),var(--accent2)); color:#fff; }
 
-    /* planet label (floating) */
+    .ui p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .links a {
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(6px);
+    }
+
+    .links a:hover {
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
+      box-shadow: 0 0 20px rgba(229, 46, 113, 0.4);
+      transform: translateY(-4px);
+    }
+
+    /* ✨ Floating label text for planets */
     .label {
       position: absolute;
       padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(0,0,0,0.45);
-      border: 1px solid rgba(255,255,255,0.06);
-      color: #fff; font-weight:600; font-size:13px;
-      transform: translate(-50%,-140%); pointer-events:none;
-      white-space:nowrap;
-    }
-
-    /* small hint for mobile */
-    @media (max-width:640px){
-      .ui .hint{ font-size:13px }
-      .brand { left: 14px; top: 12px; }
+      background: rgba(0, 0, 0, 0.45);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      transform: translate(-50%, -140%);
+      pointer-events: none;
+      white-space: nowrap;
+      transition: opacity 0.3s ease;
     }
   </style>
 </head>
 <body>
-  <div id="app">
-    <div class="brand" aria-hidden="true">
-      <div class="logo"></div>
-      <div class="title">luxvoraofficial</div>
-    </div>
+  <div class="brand">
+    <div class="logo"></div>
+    <div class="title">luxvoraofficial</div>
+  </div>
 
-    <!-- canvas will be injected -->
-    <div id="canvas-holder" style="position:relative; width:100%; height:100%;"></div>
+  <div id="container"></div>
+  <div id="labels"></div>
 
-    <!-- floating UI -->
-    <div class="ui" role="region" aria-label="Universe controls">
-      <div class="hint">Drag / swipe to look • Tap / click a planet to open</div>
-      <div class="links" aria-hidden="false">
-        <a href="games.html">Games</a>
-        <a href="projects.html">Projects</a>
-        <a href="about.html">About</a>
-        <a href="https://instagram.com/luxvoraofficial" target="_blank" rel="noopener noreferrer">Instagram</a>
-      </div>
+  <div class="ui">
+    <p>Tap or click planets to explore the Luxvora Realm</p>
+    <div class="links">
+      <a href="games.html">Games</a>
+      <a href="projects.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="https://instagram.com/luxvoraofficial" target="_blank">Instagram</a>
     </div>
   </div>
 
-  <!-- labels container -->
-  <div id="labels" aria-hidden="true"></div>
-
-<!-- Three.js as ES module from unpkg -->
+  <!-- Three.js -->
   <script type="module">
     import * as THREE from 'https://unpkg.com/three@0.152.2/build/three.module.js';
     import { OrbitControls } from 'https://unpkg.com/three@0.152.2/examples/jsm/controls/OrbitControls.js';
 
-    // --- Setup basic scene / camera / renderer ---
-    const holder = document.getElementById('canvas-holder');
-    const labelsContainer = document.getElementById('labels');
-
     const scene = new THREE.Scene();
-
-    const camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 2000);
-    camera.position.set(0, 0, 60);
-
-    const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias:true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    renderer.toneMappingExposure = 1.0;
-    holder.appendChild(renderer.domElement);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    document.getElementById("container").appendChild(renderer.domElement);
 
-    // controls (drag to look)
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enablePan = false;
-    controls.minDistance = 20;
-    controls.maxDistance = 140;
-    controls.rotateSpeed = 0.6;
-    controls.zoomSpeed = 0.8;
+const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
 
-    // subtle ambient
-    const ambient = new THREE.AmbientLight(0xffffff, 0.35);
+    camera.position.set(0, 0, 40);
+
+    const ambient = new THREE.AmbientLight(0xffffff, 0.4);
     scene.add(ambient);
 
-    // two point lights for soft glow
-    const p1 = new THREE.PointLight(0xff8a00, 1.2, 200);
-    p1.position.set(60, 40, 40);
-    scene.add(p1);
-    const p2 = new THREE.PointLight(0xe52e71, 0.9, 180);
-    p2.position.set(-60, -40, -40);
-    scene.add(p2);
+    const pointLight = new THREE.PointLight(0xff8a00, 1.2, 100);
+    pointLight.position.set(20, 10, 20);
+    scene.add(pointLight);
 
-    // planet definitions (label, color, size, position, link)
     const planets = [
-      { id:'games', label:'Games', color:0xff8a00, size:6.5, pos:[-28,8,-6], href:'games.html' },
-      { id:'projects', label:'Projects', color:0xe52e71, size:7.5, pos:[24,10,-4], href:'projects.html' },
-      { id:'about', label:'About', color:0x48c6ef, size:5.8, pos:[-6,-22,-10], href:'about.html' },
-      { id:'instagram', label:'Instagram', color:0xa86bff, size:5, pos:[18,-10,10], href:'https://instagram.com/luxvoraofficial' },
-      { id:'archive', label:'Archive', color:0x5efaa0, size:4.5, pos:[8,18,14], href:'projects.html#archive' }
+      { label: "Games", color: 0xff8a00, pos: [-15, 5, 0], href: "games.html" },
+      { label: "Projects", color: 0xe52e71, pos: [15, -3, 0], href: "projects.html" },
+      { label: "About", color: 0x48c6ef, pos: [0, -10, 5], href: "about.html" },
     ];
 
-    // create planet meshes + subtle halos (sprite) + HTML label
-    const planetGroup = new THREE.Group();
-    scene.add(planetGroup);
+    const planetMeshes = [];
+    const labelsContainer = document.getElementById("labels");
 
-    const sphereGeom = new THREE.SphereGeometry(1, 48, 48);
-
-    function makePlanet(p){
-      // material with emissive for glow
-      const mat = new THREE.MeshStandardMaterial({
+    planets.forEach((p) => {
+      const geometry = new THREE.SphereGeometry(3, 64, 64);
+      const material = new THREE.MeshStandardMaterial({
         color: p.color,
-        metalness: 0.2,
-        roughness: 0.5,
         emissive: p.color,
-        emissiveIntensity: 0.08
+        emissiveIntensity: 0.4,
+        roughness: 0.2,
+        metalness: 0.6,
       });
-      const mesh = new THREE.Mesh(sphereGeom, mat);
-      mesh.scale.setScalar(p.size);
-      mesh.position.set(...p.pos);
-      mesh.userData = { href: p.href, label: p.label, id: p.id, baseSize: p.size };
-      planetGroup.add(mesh);
+      const planet = new THREE.Mesh(geometry, material);
+      planet.position.set(...p.pos);
+      planet.userData = { href: p.href };
+      scene.add(planet);
+      planetMeshes.push(planet);
 
-      // create subtle halo using sprite (expensive? small texture-less sprite)
-      const spriteMat = new THREE.SpriteMaterial({
-        color: p.color,
-        opacity: 0.12,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending
-      });
-      const sprite = new THREE.Sprite(spriteMat);
-      sprite.scale.set(p.size*4, p.size*4, 1.0);
-      sprite.position.copy(mesh.position);
-      scene.add(sprite);
-
-      // HTML label
-      const label = document.createElement('div');
-      label.className = 'label';
+      const label = document.createElement("div");
+      label.className = "label";
       label.textContent = p.label;
       labelsContainer.appendChild(label);
-      mesh.userData.htmlLabel = label;
-    }
-
-    planets.forEach(makePlanet);
-
-    // little floating particles for depth
-    const particlesCount = 600;
-    const particlesGeo = new THREE.BufferGeometry();
-    const positions = new Float32Array(particlesCount * 3);
-
-for(let i=0;i<particlesCount;i++){
-      positions[i*3+0] = (Math.random()-0.5)*300;
-      positions[i*3+1] = (Math.random()-0.5)*200;
-      positions[i*3+2] = (Math.random()-0.5)*300;
-    }
-    particlesGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    const particlesMat = new THREE.PointsMaterial({ color:0xffffff, size:0.6, transparent:true, opacity:0.08 });
-    const particles = new THREE.Points(particlesGeo, particlesMat);
-    scene.add(particles);
-
-    // raycaster for clicks/taps + hover
-    const raycaster = new THREE.Raycaster();
-    const pointer = new THREE.Vector2();
-    let hovered = null;
-
-    function onPointerMove(e){
-      const rect = renderer.domElement.getBoundingClientRect();
-      const x = ( (e.clientX ?? e.touches?.[0]?.clientX) - rect.left ) / rect.width;
-      const y = ( (e.clientY ?? e.touches?.[0]?.clientY) - rect.top ) / rect.height;
-      pointer.x = x * 2 - 1;
-      pointer.y = - (y * 2 - 1);
-    }
-    window.addEventListener('pointermove', onPointerMove, { passive:true });
-
-    function onClick(e){
-      onPointerMove(e);
-      raycaster.setFromCamera(pointer, camera);
-      const intersects = raycaster.intersectObjects(planetGroup.children, true);
-      if(intersects.length>0){
-        const first = intersects[0].object;
-        const href = first.userData.href;
-        if(href){
-          // small click animation then navigate
-          first.scale.multiplyScalar(1.08);
-          setTimeout(()=>{ window.location.href = href; }, 220);
-        }
-      }
-    }
-    window.addEventListener('click', onClick);
-
-    // handle touch (tap) separately for mobile-friendly UX
-    window.addEventListener('touchstart', (ev)=>{
-      if(ev.touches.length===1){
-        onPointerMove(ev.touches[0]);
-      }
-    }, { passive:true });
-    window.addEventListener('touchend', (ev)=>{
-      // use last pointer
-      onClick(ev.changedTouches?.[0] || ev);
+      planet.userData.label = label;
     });
 
-    // animate loop
-    const clock = new THREE.Clock();
-    function animate(){
-      const t = clock.getElapsedTime();
+    // ✨ Floating stars
+    const starGeometry = new THREE.BufferGeometry();
+    const starCount = 500;
+    const starPositions = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount * 3; i++) {
+      starPositions[i] = (Math.random() - 0.5) * 300;
+    }
+    starGeometry.setAttribute("position", new THREE.BufferAttribute(starPositions, 3));
+    const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.8, transparent: true, opacity: 0.6 });
+    const stars = new THREE.Points(starGeometry, starMaterial);
+    scene.add(stars);
 
-      // rotate planet group slowly
-      planetGroup.rotation.y = 0.08 * Math.sin(t*0.2);
-      planetGroup.children.forEach((m, i)=>{
-        m.rotation.y = t * (0.1 + i*0.02);
-      });
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
 
-      // hover detection
+    window.addEventListener("pointermove", (e) => {
+      pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+      pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    });
+
+    window.addEventListener("click", () => {
       raycaster.setFromCamera(pointer, camera);
-      const hits = raycaster.intersectObjects(planetGroup.children, true);
-      if(hits.length>0){
-        const obj = hits[0].object;
-        if(hovered !== obj){
-          hovered = obj;
-          // enlarge slightly and show label
-          planetGroup.children.forEach(p=> p.scale.setScalar(p.userData.baseSize));
-          obj.scale.setScalar(obj.userData.baseSize * 1.12);
-        }
-      } else {
-        hovered = null;
-        planetGroup.children.forEach(p=> p.scale.setScalar(p.userData.baseSize));
+      const intersects = raycaster.intersectObjects(planetMeshes);
+      if (intersects.length > 0) {
+        const href = intersects[0].object.userData.href;
+        window.location.href = href;
       }
+    });
 
-      // update HTML labels positions
-      planetGroup.children.forEach(mesh=>{
-        const label = mesh.userData.htmlLabel;
-        if(!label) return;
-        const pos = mesh.position.clone();
-        pos.project(camera);
-        const x = (pos.x * 0.5 + 0.5) * window.innerWidth;
-        const y = (-pos.y * 0.5 + 0.5) * window.innerHeight;
-        label.style.left = ${x}px;
-        label.style.top = ${y}px;
-        // fade label by distance
-        const d = camera.position.distanceTo(mesh.position);
-        label.style.opacity = (d < 160) ? 1 : 0.5;
+    function animate() {
+      requestAnimationFrame(animate);
+      stars.rotation.y += 0.0005;
+      planetMeshes.forEach((p, i) => {
+        p.rotation.y += 0.01;
+        const screenPos = p.position.clone().project(camera);
+        const x = (screenPos.x * 0.5 + 0.5) * window.innerWidth;
+        const y = (-screenPos.y * 0.5 + 0.5) * window.innerHeight;
+        p.userData.label.style.left = ${x}px;
+        p.userData.label.style.top = ${y}px;
       });
-
       controls.update();
       renderer.render(scene, camera);
-      requestAnimationFrame(animate);
     }
+    animate();
 
-    // handle resize
-    function onResize(){
+    window.addEventListener("resize", () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
-    }
-    window.addEventListener('resize', onResize);
-
-    // initial animate
-    animate();
-
-// lightweight accessibility: keyboard shortcuts to open pages
-    window.addEventListener('keydown', (e)=>{
-      if(e.key === '1') window.location.href = 'games.html';
-      if(e.key === '2') window.location.href = 'projects.html';
-      if(e.key === '3') window.location.href = 'about.html';
     });
-
-    // small entrance camera animation
-    camera.position.set(0, 0, 120);
-    let start = performance.now();
-    (function intro(){
-      const now = performance.now();
-      const elapsed = (now - start) / 1000;
-      if(elapsed < 1.2){
-        camera.position.z = 120 - 60 * (elapsed/1.2);
-        requestAnimationFrame(intro);
-      } else {
-        camera.position.z = 60;
-      }
-    })();
-
   </script>
 </body>
 </html>
