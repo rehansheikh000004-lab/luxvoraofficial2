@@ -11,18 +11,9 @@
     body {
       font-family: 'Poppins', sans-serif;
       overflow: hidden;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      background-size: 400% 400%;
-      animation: bgShift 10s ease infinite;
+      background: radial-gradient(circle at center, #0b0f24, #000);
       color: #fff;
-      text-align: center;
       height: 100vh;
-    }
-
-    @keyframes bgShift {
-      0% {background-position: 0% 50%;}
-      50% {background-position: 100% 50%;}
-      100% {background-position: 0% 50%;}
     }
 
     canvas {
@@ -32,11 +23,18 @@
       z-index: 0;
     }
 
+    @keyframes bgShift {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
     .content {
       position: relative;
       z-index: 2;
       top: 45%;
       transform: translateY(-50%);
+      text-align: center;
       animation: fadeIn 2s ease forwards;
     }
 
@@ -46,7 +44,7 @@
     }
 
     h1 {
-      font-size: 2.2rem;
+      font-size: 2.4rem;
       font-weight: 700;
       background: linear-gradient(90deg, #ff8a00, #e52e71);
       -webkit-background-clip: text;
@@ -57,31 +55,53 @@
     p {
       color: rgba(255,255,255,0.8);
       font-size: 1rem;
-      margin-bottom: 20px;
+      margin-bottom: 40px;
     }
 
-    .btns {
+    .planets {
       display: flex;
       justify-content: center;
-      gap: 15px;
+      align-items: center;
+      gap: 50px;
       flex-wrap: wrap;
+      position: relative;
     }
 
-    a {
+    .planet {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ff9a9e, #fad0c4);
+      box-shadow: 0 0 30px rgba(255, 138, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
       text-decoration: none;
-      color: #fff;
-      padding: 10px 20px;
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 12px;
-      backdrop-filter: blur(5px);
-      transition: all 0.3s ease;
+      color: white;
+      transition: all 0.4s ease;
+      animation: float 6s ease-in-out infinite;
+      cursor: pointer;
+      position: relative;
     }
 
-    a:hover {
-      background: linear-gradient(90deg, #ff8a00, #e52e71);
-      box-shadow: 0 0 15px rgba(229,46,113,0.4);
-      transform: translateY(-3px);
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(5deg); }
+      100% { transform: translateY(0) rotate(0deg); }
     }
+
+    .planet:hover {
+      transform: scale(1.1) rotate(10deg);
+      box-shadow: 0 0 50px rgba(255, 138, 0, 0.8);
+      background: radial-gradient(circle at 70% 70%, #e52e71, #ff8a00);
+    }
+
+    /* Custom planet colors */
+    .planet.games { background: radial-gradient(circle at 30% 30%, #a18cd1, #fbc2eb); box-shadow: 0 0 25px #a18cd1; }
+    .planet.projects { background: radial-gradient(circle at 30% 30%, #84fab0, #8fd3f4); box-shadow: 0 0 25px #84fab0; }
+    .planet.about { background: radial-gradient(circle at 30% 30%, #ffecd2, #fcb69f); box-shadow: 0 0 25px #fcb69f; }
+    .planet.insta { background: radial-gradient(circle at 30% 30%, #f6d365, #fda085); box-shadow: 0 0 25px #fda085; }
 
     .music {
       position: absolute;
@@ -108,11 +128,11 @@
   <div class="content">
     <h1>Luxvora Universe</h1>
     <p>Explore. Create. Evolve.</p>
-    <div class="btns">
-      <a href="games.html">Games</a>
-      <a href="projects.html">Projects</a>
-      <a href="about.html">About</a>
-      <a href="https://instagram.com/luxvoraofficial" target="_blank">Instagram</a>
+    <div class="planets">
+      <a href="games.html" class="planet games">Games</a>
+      <a href="projects.html" class="planet projects">Projects</a>
+      <a href="about.html" class="planet about">About</a>
+      <a href="https://instagram.com/luxvoraofficial" target="_blank" class="planet insta">Insta</a>
     </div>
   </div>
 
@@ -123,7 +143,7 @@
   </audio>
 
   <script>
-    // 🌌 Stars
+    // 🌌 Stars background
     const c = document.getElementById("stars");
     const ctx = c.getContext("2d");
     let w, h, stars = [];
@@ -131,11 +151,11 @@
     function resize() {
       w = c.width = window.innerWidth;
       h = c.height = window.innerHeight;
-      stars = Array.from({ length: 100 }, () => ({
+      stars = Array.from({ length: 150 }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
-        r: Math.random() * 2,
-        s: Math.random() * 0.5
+        r: Math.random() * 1.8,
+        s: Math.random() * 0.4
       }));
     }
 
@@ -156,7 +176,7 @@
     draw();
     window.addEventListener("resize", resize);
 
-    // 🎶 Music
+    // 🎵 Music control
     const music = document.getElementById("music");
     const btn = document.getElementById("musicBtn");
     let playing = false;
