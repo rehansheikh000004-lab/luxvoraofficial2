@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WeatherView — Luxvora</title>
+  <link rel="stylesheet" href="weatherapp.css">
+</head>
+<body>
+  <div class="weather-container">
+    <div class="glass-card">
+      <h1 class="app-title">WeatherView</h1>
+      <div class="location">
+        <input type="text" id="city-input" placeholder="Enter city..." />
+        <button id="get-weather">☀️</button>
+      </div>
+      <div class="weather-info">
+        <h2 id="city-name">New York</h2>
+        <h3 id="temperature">25°C</h3>
+        <p id="condition">Clear Sky</p>
+        <div class="extra-info">
+          <span>💧 Humidity: <b id="humidity">60%</b></span>
+          <span>🌬️ Wind: <b id="wind">8 km/h</b></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="weatherapp.js"></script>
+</body>
+</html>
