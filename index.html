@@ -2,106 +2,177 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Luxvoraofficial</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luxvora Universe</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
     body {
       margin: 0;
+      overflow: hidden;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #0d0f14, #1c1f29);
-      color: white;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+      background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e);
+      background-size: 400% 400%;
+      animation: gradientMove 12s ease infinite;
+      color: #fff;
     }
-    header {
-      background: rgba(0,0,0,0.7);
-      padding: 15px;
+
+    @keyframes gradientMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
     }
-    nav ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      gap: 25px;
+
+    /* ✨ Cinematic fade-in */
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 2s ease forwards;
     }
-    nav ul li {
-      display: inline;
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
     }
-    nav ul li a {
-      text-decoration: none;
-      color: #ff8a00;
-      font-weight: bold;
-      transition: color 0.3s;
+
+    /* 💫 Stars */
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
     }
-    nav ul li a:hover {
-      color: #e52e71;
-    }
-    .hero {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+
+    /* 🌟 Content */
+    .content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       text-align: center;
-      padding: 40px;
+      z-index: 2;
     }
-    .hero h1 {
-      font-size: 3rem;
-      background: linear-gradient(to right, #ff8a00, #e52e71);
+
+    .logo {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 20px;
+      letter-spacing: 1.5px;
     }
-    .hero p {
-      font-size: 1.2rem;
-      margin-bottom: 30px;
-      color: #ccc;
+
+    .subtitle {
+      margin-top: 10px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.8);
     }
+
     .btn {
       display: inline-block;
-      padding: 15px 30px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: white;
-      background: linear-gradient(to right, #ff8a00, #e52e71);
-      border-radius: 30px;
+      margin-top: 25px;
+      padding: 10px 25px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255,255,255,0.05);
+      color: #fff;
       text-decoration: none;
-      transition: transform 0.3s, box-shadow 0.3s;
-      box-shadow: 0 0 15px rgba(229,46,113,0.6);
+      font-weight: 600;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
     }
+
     .btn:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0 25px rgba(255,138,0,0.9);
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
+      transform: translateY(-3px);
+      box-shadow: 0 0 20px rgba(229, 46, 113, 0.4);
     }
-    footer {
-      padding: 15px;
-      text-align: center;
-      color: #aaa;
-      font-size: 0.9rem;
+
+    /* 🎶 Music Toggle */
+    .music-btn {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      z-index: 3;
+      background: rgba(255,255,255,0.1);
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(6px);
+      transition: all 0.3s ease;
+    }
+
+    .music-btn:hover {
+      background: rgba(255,255,255,0.2);
     }
   </style>
 </head>
 <body>
-  <header>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="games.html">Games 🎮</a></li>
-        <li><a href="projects.html">Projects 📱</a></li>
-        <li><a href="about.html">About</a></li>
-      </ul>
-    </nav>
-  </header>
+  <canvas id="stars"></canvas>
 
-  <section class="hero">
-    <h1>luxvoraofficial</h1>
-    <p>Web Developer • Innovator • Creator</p>
-    <a href="games.html" class="btn">🎮 Play Games Arcade</a>
-  </section>
+  <div class="content fade-in">
+    <div class="logo">Luxvora Universe</div>
+    <div class="subtitle">Explore. Create. Evolve.</div>
+    <a href="projects.html" class="btn">Enter Universe</a>
+  </div>
 
-  <footer>
-    © 2025 Luxvoraofficial | Built by <b>Rehan</b> <b>Sheikh</b>
-  </footer>
+  <div class="music-btn" id="musicToggle">🎵 Play Music</div>
+
+  <audio id="bgMusic" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_08a2cbac4b.mp3?filename=calm-space-ambient-110856.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // 🌠 Stars Background
+    const canvas = document.getElementById("stars");
+    const ctx = canvas.getContext("2d");
+    let stars = [];
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      stars = Array.from({ length: 150 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2,
+        speed: 0.1 + Math.random() * 0.3
+      }));
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "white";
+      stars.forEach(s => {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fill();
+        s.y += s.speed;
+        if (s.y > canvas.height) s.y = 0;
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // 🎶 Music
+    const music = document.getElementById("bgMusic");
+    const toggle = document.getElementById("musicToggle");
+    let playing = false;
+
+    toggle.onclick = () => {
+      if (!playing) {
+        music.play();
+        toggle.textContent = "⏸ Pause Music";
+      } else {
+        music.pause();
+        toggle.textContent = "🎵 Play Music";
+      }
+      playing = !playing;
+    };
+  </script>
 </body>
 </html>
