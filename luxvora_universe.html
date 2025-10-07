@@ -32,7 +32,6 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* ✨ Brand Logo */
     .brand {
       position: absolute;
       top: 25px;
@@ -60,12 +59,10 @@
       letter-spacing: 1px;
     }
 
-    /* ✨ Canvas full screen */
     canvas {
       display: block;
     }
 
-    /* ✨ UI Buttons */
     .ui {
       position: absolute;
       bottom: 40px;
@@ -107,7 +104,6 @@
       transform: translateY(-4px);
     }
 
-    /* ✨ Floating label text for planets */
     .label {
       position: absolute;
       padding: 6px 10px;
@@ -120,6 +116,55 @@
       pointer-events: none;
       white-space: nowrap;
       transition: opacity 0.3s ease;
+    }
+
+    /* 🌌 Intro Overlay */
+    .intro {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(15px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      opacity: 1;
+      transition: opacity 1s ease;
+    }
+
+    .intro h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-align: center;
+    }
+
+    .start-btn {
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
+      border: none;
+      color: white;
+      padding: 14px 34px;
+      border-radius: 999px;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(229, 46, 113, 0.4);
+    }
+
+    .start-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 35px rgba(229, 46, 113, 0.6);
+    }
+
+    .intro.fade-out {
+      opacity: 0;
+      pointer-events: none;
     }
   </style>
 </head>
@@ -142,7 +187,17 @@
     </div>
   </div>
 
-  <!-- Three.js -->
+  <!-- 🌌 Intro Section -->
+  <div class="intro" id="intro">
+    <h1>Welcome to the Luxvora Universe</h1>
+    <button class="start-btn" id="startJourney">Start Journey ✨</button>
+  </div>
+
+  <audio id="bgMusic" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/11/10/audio_1e8b7290be.mp3?filename=ambient-space-ambient-122967.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Three.js Universe -->
   <script type="module">
     import * as THREE from 'https://unpkg.com/three@0.152.2/build/three.module.js';
     import { OrbitControls } from 'https://unpkg.com/three@0.152.2/examples/jsm/controls/OrbitControls.js';
@@ -154,11 +209,12 @@
     renderer.setPixelRatio(window.devicePixelRatio);
     document.getElementById("container").appendChild(renderer.domElement);
 
-const controls = new OrbitControls(camera, renderer.domElement);
+    const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
+    controls.enabled = false;
 
-    camera.position.set(0, 0, 40);
+    camera.position.set(0, 0, 50);
 
     const ambient = new THREE.AmbientLight(0xffffff, 0.4);
     scene.add(ambient);
@@ -168,9 +224,9 @@ const controls = new OrbitControls(camera, renderer.domElement);
     scene.add(pointLight);
 
     const planets = [
-      { label: "Games", color: 0xff8a00, pos: [-15, 5, 0], href: "games.html" },
-      { label: "Projects", color: 0xe52e71, pos: [15, -3, 0], href: "projects.html" },
-      { label: "About", color: 0x48c6ef, pos: [0, -10, 5], href: "about.html" },
+      { label: "Games", color: 0xff8a00, pos: [-18, 5, 0], href: "games.html" },
+      { label: "Projects", color: 0xe52e71, pos: [18, -3, 0], href: "projects.html" },
+      { label: "About", color: 0x48c6ef, pos: [0, -12, 5], href: "about.html" },
     ];
 
     const planetMeshes = [];
@@ -200,7 +256,7 @@ const controls = new OrbitControls(camera, renderer.domElement);
 
     // ✨ Floating stars
     const starGeometry = new THREE.BufferGeometry();
-    const starCount = 500;
+    const starCount = 600;
     const starPositions = new Float32Array(starCount * 3);
     for (let i = 0; i < starCount * 3; i++) {
       starPositions[i] = (Math.random() - 0.5) * 300;
@@ -230,18 +286,30 @@ const controls = new OrbitControls(camera, renderer.domElement);
     function animate() {
       requestAnimationFrame(animate);
       stars.rotation.y += 0.0005;
-      planetMeshes.forEach((p, i) => {
+      planetMeshes.forEach((p) => {
         p.rotation.y += 0.01;
         const screenPos = p.position.clone().project(camera);
         const x = (screenPos.x * 0.5 + 0.5) * window.innerWidth;
         const y = (-screenPos.y * 0.5 + 0.5) * window.innerHeight;
-        p.userData.label.style.left = ${x}px;
-        p.userData.label.style.top = ${y}px;
+        p.userData.label.style.left = `${x}px`;
+        p.userData.label.style.top = `${y}px`;
       });
       controls.update();
       renderer.render(scene, camera);
     }
     animate();
+
+    // 🎬 Intro logic
+    const intro = document.getElementById("intro");
+    const startBtn = document.getElementById("startJourney");
+    const bgMusic = document.getElementById("bgMusic");
+
+    startBtn.addEventListener("click", () => {
+      bgMusic.volume = 0.5;
+      bgMusic.play();
+      intro.classList.add("fade-out");
+      controls.enabled = true;
+    });
 
     window.addEventListener("resize", () => {
       camera.aspect = window.innerWidth / window.innerHeight;
