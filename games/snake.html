@@ -15,8 +15,8 @@
 
     body {
       margin: 0;
-      background: radial-gradient(circle at top left, rgba(229,46,113,0.1), transparent 60%),
-                  radial-gradient(circle at bottom right, rgba(255,138,0,0.1), transparent 60%),
+      background: radial-gradient(circle at top left, rgba(229,46,113,0.15), transparent 60%),
+                  radial-gradient(circle at bottom right, rgba(255,138,0,0.15), transparent 60%),
                   var(--bg1);
       color: #fff;
       font-family: "Poppins", system-ui, sans-serif;
@@ -103,6 +103,7 @@
     @media (max-width: 500px) {
       h1 { font-size: 1.6rem; }
       .btn { width: 58px; height: 58px; font-size: 1.2rem; }
+      canvas { width: 90vw; height: 90vw; }
     }
   </style>
 </head>
@@ -134,6 +135,7 @@
     let direction = "RIGHT";
     let food = randomFood();
     let score = 0;
+    let gameOver = false;
 
     function randomFood() {
       return {
@@ -157,25 +159,30 @@
     document.getElementById("right").onclick = () => { if (direction !== "LEFT") direction = "RIGHT"; };
 
     function drawGame() {
+      if (gameOver) return;
+
       ctx.fillStyle = "rgba(255,255,255,0.03)";
       ctx.fillRect(0, 0, 320, 320);
 
+      // draw snake
       for (let i = 0; i < snake.length; i++) {
         const grad = ctx.createLinearGradient(0, 0, 320, 320);
         grad.addColorStop(0, "#ff8a00");
         grad.addColorStop(1, "#e52e71");
         ctx.fillStyle = grad;
-        ctx.shadowBlur = 15;
+        ctx.shadowBlur = 10;
         ctx.shadowColor = "#e52e71";
         ctx.fillRect(snake[i].x, snake[i].y, box - 2, box - 2);
       }
 
+      // draw food
       ctx.shadowBlur = 0;
       ctx.fillStyle = "#fff";
       ctx.beginPath();
       ctx.arc(food.x + box / 2, food.y + box / 2, box / 3, 0, 2 * Math.PI);
       ctx.fill();
 
+      // current head
       let headX = snake[0].x;
       let headY = snake[0].y;
 
@@ -184,6 +191,7 @@
       if (direction === "RIGHT") headX += box;
       if (direction === "DOWN") headY += box;
 
+      // check food
       if (headX === food.x && headY === food.y) {
         food = randomFood();
         score++;
@@ -192,13 +200,15 @@
         snake.pop();
       }
 
-      let newHead = {x: headX, y: headY};
+      const newHead = {x: headX, y: headY};
 
+      // check wall or self collision
       if (
         headX < 0 || headY < 0 ||
         headX >= 320 || headY >= 320 ||
         snake.some(s => s.x === newHead.x && s.y === newHead.y)
       ) {
+        gameOver = true;
         ctx.fillStyle = "rgba(0,0,0,0.5)";
         ctx.fillRect(0, 0, 320, 320);
         ctx.fillStyle = "#fff";
@@ -209,7 +219,7 @@
       }
 
       snake.unshift(newHead);
-      requestAnimationFrame(drawGame);
+      setTimeout(drawGame, 130);
     }
 
     drawGame();
