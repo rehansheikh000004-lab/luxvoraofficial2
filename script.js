@@ -97,3 +97,11 @@ draw();
     localStorage.setItem("theme", "light");
   }
 });
+
+// 🌗 LUXVORA LIGHT/DARK MODE TOGGLE
+const toggle = document.getElementById('theme-switch');
+if (toggle) {
+  toggle.addEventListener('change', () => {
+    document.body.classList.toggle('dark');
+  });
+}
