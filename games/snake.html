@@ -2,206 +2,217 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Snake Game | Luxvora Arcade</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snake Neo — Luxvora Universe</title>
+
   <style>
+    :root {
+      --accent1: #ff8a00;
+      --accent2: #e52e71;
+      --bg1: #0a0a15;
+      --glass: rgba(255,255,255,0.05);
+    }
+
     body {
       margin: 0;
-      padding: 0;
+      background: radial-gradient(circle at top left, rgba(229,46,113,0.1), transparent 60%),
+                  radial-gradient(circle at bottom right, rgba(255,138,0,0.1), transparent 60%),
+                  var(--bg1);
+      color: #fff;
+      font-family: "Poppins", system-ui, sans-serif;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      height: 100vh;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      font-family: "Poppins", sans-serif;
-      color: white;
+      justify-content: flex-start;
+      min-height: 100vh;
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    header {
       text-align: center;
+      margin-top: 25px;
     }
 
     h1 {
-      margin-bottom: 10px;
-      font-size: 1.8rem;
-      background: linear-gradient(45deg, #ff8a00, #e52e71);
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      font-size: 2rem;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    .score {
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 15px;
     }
 
     canvas {
-      background: rgba(255, 255, 255, 0.05);
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-      border-radius: 10px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
     }
 
+    /* Touch controls */
     .controls {
-      text-align: center;
-      margin-top: 20px;
+      display: grid;
+      grid-template-areas:
+        ". up ."
+        "left . right"
+        ". down .";
+      gap: 12px;
+      margin-top: 30px;
     }
 
-    .controls button {
-      font-size: 1.6rem;
-      background: linear-gradient(135deg, #ff8a00, #e52e71);
-      border: none;
+    .btn {
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      color: white;
-      margin: 8px;
-      cursor: pointer;
-      box-shadow: 0 0 12px rgba(255, 138, 0, 0.5);
-      transition: transform 0.1s, box-shadow 0.2s;
-    }
-
-    .controls button:active {
-      transform: scale(0.9);
-      box-shadow: 0 0 20px rgba(229, 46, 113, 0.7);
-    }
-
-    .back-btn {
-      margin-top: 25px;
-      padding: 10px 20px;
       border: none;
-      border-radius: 25px;
-      background: linear-gradient(90deg, #e52e71, #ff8a00);
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
       color: white;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      box-shadow: 0 0 12px rgba(255, 138, 0, 0.4);
-      transition: transform 0.2s;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(255,138,0,0.3);
+      transition: 0.2s;
+    }
+    .btn:active {
+      transform: scale(0.95);
+      box-shadow: 0 0 30px rgba(229,46,113,0.4);
     }
 
-    .back-btn:hover {
-      transform: scale(1.05);
-    }
+    .up { grid-area: up; }
+    .down { grid-area: down; }
+    .left { grid-area: left; }
+    .right { grid-area: right; }
 
     footer {
-      margin-top: 15px;
+      margin-top: auto;
+      padding: 20px;
       font-size: 0.85rem;
-      opacity: 0.7;
+      color: rgba(255,255,255,0.6);
+    }
+
+    @media (max-width: 500px) {
+      h1 { font-size: 1.6rem; }
+      .btn { width: 58px; height: 58px; font-size: 1.2rem; }
     }
   </style>
 </head>
-<body>
-  <h1>🐍 Snake Game</h1>
-  <canvas id="game" width="300" height="300"></canvas>
 
-  <!-- On-screen mobile controls -->
+<body>
+  <header>
+    <h1>🐍 Snake Neo</h1>
+    <div class="score">Score: <span id="score">0</span></div>
+  </header>
+
+  <canvas id="game" width="320" height="320"></canvas>
+
   <div class="controls">
-    <div>
-      <button id="up">⬆️</button>
-    </div>
-    <div>
-      <button id="left">⬅️</button>
-      <button id="down">⬇️</button>
-      <button id="right">➡️</button>
-    </div>
+    <button class="btn up" id="up">▲</button>
+    <button class="btn left" id="left">◀</button>
+    <button class="btn right" id="right">▶</button>
+    <button class="btn down" id="down">▼</button>
   </div>
 
-  <!-- Back Button -->
-  <button class="back-btn" onclick="window.location.href='../games.html'">← Back to Games</button>
-
-  <footer>Luxvora Arcade | Built by Rehan Sheikh</footer>
+  <footer>
+    © 2025 Luxvoraofficial — Designed by Rehan Sheikh
+  </footer>
 
   <script>
     const canvas = document.getElementById("game");
     const ctx = canvas.getContext("2d");
-
-    const box = 15;
-    let snake = [];
-    snake[0] = { x: 9 * box, y: 10 * box };
-    let food = {
-      x: Math.floor(Math.random() * 19 + 1) * box,
-      y: Math.floor(Math.random() * 19 + 3) * box
-    };
+    const box = 20;
+    let snake = [{x: 8 * box, y: 8 * box}];
+    let direction = "RIGHT";
+    let food = randomFood();
     let score = 0;
-    let direction;
 
-    // Keyboard controls
-    document.addEventListener("keydown", directionControl);
-    function directionControl(e) {
-      if (e.keyCode == 37 && direction != "RIGHT") direction = "LEFT";
-      else if (e.keyCode == 38 && direction != "DOWN") direction = "UP";
-      else if (e.keyCode == 39 && direction != "LEFT") direction = "RIGHT";
-      else if (e.keyCode == 40 && direction != "UP") direction = "DOWN";
+    function randomFood() {
+      return {
+        x: Math.floor(Math.random() * 16) * box,
+        y: Math.floor(Math.random() * 16) * box
+      };
     }
 
-    // Mobile button controls
-    document.getElementById("up").addEventListener("click", () => {
-      if (direction !== "DOWN") direction = "UP";
-    });
-    document.getElementById("down").addEventListener("click", () => {
-      if (direction !== "UP") direction = "DOWN";
-    });
-    document.getElementById("left").addEventListener("click", () => {
-      if (direction !== "RIGHT") direction = "LEFT";
-    });
-    document.getElementById("right").addEventListener("click", () => {
-      if (direction !== "LEFT") direction = "RIGHT";
-    });
-
-    function collision(head, array) {
-      for (let i = 0; i < array.length; i++) {
-        if (head.x == array[i].x && head.y == array[i].y) return true;
-      }
-      return false;
+    document.addEventListener("keydown", changeDirection);
+    function changeDirection(e) {
+      if (e.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
+      else if (e.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
+      else if (e.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
+      else if (e.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
     }
 
-    function draw() {
-      ctx.fillStyle = "#111";
-      ctx.fillRect(0, 0, 300, 300);
+    // Touch controls
+    document.getElementById("up").onclick = () => { if (direction !== "DOWN") direction = "UP"; };
+    document.getElementById("down").onclick = () => { if (direction !== "UP") direction = "DOWN"; };
+    document.getElementById("left").onclick = () => { if (direction !== "RIGHT") direction = "LEFT"; };
+    document.getElementById("right").onclick = () => { if (direction !== "LEFT") direction = "RIGHT"; };
+
+    function drawGame() {
+      ctx.fillStyle = "rgba(255,255,255,0.03)";
+      ctx.fillRect(0, 0, 320, 320);
 
       for (let i = 0; i < snake.length; i++) {
-        ctx.fillStyle = i == 0 ? "#e52e71" : "#ff8a00";
-        ctx.fillRect(snake[i].x, snake[i].y, box, box);
-        ctx.strokeStyle = "#222";
-        ctx.strokeRect(snake[i].x, snake[i].y, box, box);
+        const grad = ctx.createLinearGradient(0, 0, 320, 320);
+        grad.addColorStop(0, "#ff8a00");
+        grad.addColorStop(1, "#e52e71");
+        ctx.fillStyle = grad;
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = "#e52e71";
+        ctx.fillRect(snake[i].x, snake[i].y, box - 2, box - 2);
       }
 
+      ctx.shadowBlur = 0;
       ctx.fillStyle = "#fff";
-      ctx.fillRect(food.x, food.y, box, box);
+      ctx.beginPath();
+      ctx.arc(food.x + box / 2, food.y + box / 2, box / 3, 0, 2 * Math.PI);
+      ctx.fill();
 
-      let snakeX = snake[0].x;
-      let snakeY = snake[0].y;
+      let headX = snake[0].x;
+      let headY = snake[0].y;
 
-      if (direction == "LEFT") snakeX -= box;
-      if (direction == "UP") snakeY -= box;
-      if (direction == "RIGHT") snakeX += box;
-      if (direction == "DOWN") snakeY += box;
+      if (direction === "LEFT") headX -= box;
+      if (direction === "UP") headY -= box;
+      if (direction === "RIGHT") headX += box;
+      if (direction === "DOWN") headY += box;
 
-      if (snakeX == food.x && snakeY == food.y) {
+      if (headX === food.x && headY === food.y) {
+        food = randomFood();
         score++;
-        food = {
-          x: Math.floor(Math.random() * 19 + 1) * box,
-          y: Math.floor(Math.random() * 19 + 3) * box
-        };
+        document.getElementById("score").innerText = score;
       } else {
         snake.pop();
       }
 
-      let newHead = { x: snakeX, y: snakeY };
+      let newHead = {x: headX, y: headY};
 
-      // Game Over
       if (
-        snakeX < 0 ||
-        snakeY < 0 ||
-        snakeX >= 300 ||
-        snakeY >= 300 ||
-        collision(newHead, snake)
+        headX < 0 || headY < 0 ||
+        headX >= 320 || headY >= 320 ||
+        snake.some(s => s.x === newHead.x && s.y === newHead.y)
       ) {
-        clearInterval(game);
-        alert("Game Over! Score: " + score);
-        location.reload();
+        ctx.fillStyle = "rgba(0,0,0,0.5)";
+        ctx.fillRect(0, 0, 320, 320);
+        ctx.fillStyle = "#fff";
+        ctx.font = "18px Poppins";
+        ctx.fillText("Game Over", 100, 160);
+        ctx.fillText("Score: " + score, 120, 190);
+        return;
       }
 
       snake.unshift(newHead);
-
-      ctx.fillStyle = "#fff";
-      ctx.font = "16px Poppins";
-      ctx.fillText("Score: " + score, 10, 20);
+      requestAnimationFrame(drawGame);
     }
 
-    let game = setInterval(draw, 100);
+    drawGame();
   </script>
 </body>
 </html>
