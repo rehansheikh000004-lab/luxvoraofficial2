@@ -2,36 +2,113 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Luxvora Games Arcade</title>
+  <title>Games | Luxvoraofficial</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0d0f14, #1c1f29);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      background: rgba(0,0,0,0.7);
+      padding: 15px;
+    }
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: #ff8a00;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    nav ul li a:hover {
+      color: #e52e71;
+    }
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px;
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(to right, #ff8a00, #e52e71);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 30px;
+    }
+    .game-list {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .game-list li {
+      background: rgba(255,255,255,0.05);
+      border-radius: 15px;
+      padding: 20px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .game-list li:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 15px rgba(255,138,0,0.5);
+    }
+    .game-list a {
+      text-decoration: none;
+      font-size: 1.2rem;
+      color: white;
+      font-weight: bold;
+    }
+    footer {
+      padding: 15px;
+      text-align: center;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
-<body class="dark games-page">
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="games.html">Games 🎮</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  <div class="theme-toggle">
-    <input type="checkbox" id="theme-switch" />
-    <label for="theme-switch" class="switch">
-      <span class="sun">☀️</span>
-      <span class="moon">🌙</span>
-    </label>
-  </div>
+  <section class="hero">
+    <h1>🎮 Luxvoraofficial Games Arcade</h1>
+    <ul class="game-list">
+      <li><a href="games/snake.html">🐍 Snake Game</a></li>
+      <li><a href="games/tictactoe.html">❌⭕ Tic Tac Toe</a></li>
+      <li><a href="games/memory.html">🧠 Memory Game</a></li>
+      <li><a href="games/rockpaperscissors.html">✊✋✌ Rock Paper Scissors</a></li>
+      <li><a href="games/pong.html">🏓 Pong Game</a></li>
+    </ul>
+  </section>
 
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="games.html">Games</a>
-    <a href="projects.html">Projects</a>
-    <a href="about.html">About</a>
-  </nav>
-
-  <h1>🎮 Luxvora Arcade</h1>
-  <p>Experience fun, challenge, and aesthetics in every click.</p>
-
-  <div class="card">Snake Game 🐍</div>
-  <div class="card">Pong Game 🏓</div>
-  <div class="card">Breakout Game 💥</div>
-
-  <footer>LuxvoraOfficial © Built by Rehan Sheikh</footer>
-
-  <script src="script.js"></script>
+  <footer>
+    © 2025 Luxvoraofficial | Built by Rehan Sheikh
+  </footer>
 </body>
 </html>
