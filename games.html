@@ -2,112 +2,175 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Games | Luxvoraofficial</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luxvora Arcade | Games</title>
+  <link rel="stylesheet" href="../style.css">
   <style>
+    /* Page-specific background & animations */
     body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #0d0f14, #1c1f29);
-      color: white;
-      display: flex;
-      flex-direction: column;
+      background: radial-gradient(circle at top, #1b1b28, #0b0b13);
       min-height: 100vh;
-    }
-    header {
-      background: rgba(0,0,0,0.7);
-      padding: 15px;
-    }
-    nav ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      gap: 25px;
-    }
-    nav ul li a {
-      text-decoration: none;
-      color: #ff8a00;
-      font-weight: bold;
-      transition: color 0.3s;
-    }
-    nav ul li a:hover {
-      color: #e52e71;
-    }
-    .hero {
-      flex: 1;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      color: var(--text);
+      transition: background 0.5s ease;
+    }
+
+    /* Floating gradient overlay for glow effect */
+    body::before {
+      content: "";
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 180deg at 50% 50%, #ff0080, #7928ca, #2575fc, #ff0080);
+      filter: blur(150px);
+      opacity: 0.08;
+      z-index: -1;
+      animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .hero {
       text-align: center;
-      padding: 40px;
+      margin: 3rem 1rem 2rem;
+      animation: fadeIn 1.2s ease;
     }
     .hero h1 {
-      font-size: 2.5rem;
-      background: linear-gradient(to right, #ff8a00, #e52e71);
+      font-size: 2.8rem;
+      background: var(--accent);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 30px;
+      font-weight: 700;
     }
-    .game-list {
-      list-style: none;
-      padding: 0;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      max-width: 1000px;
-      margin: auto;
+    .hero p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin-top: 10px;
     }
-    .game-list li {
-      background: rgba(255,255,255,0.05);
-      border-radius: 15px;
-      padding: 20px;
-      transition: transform 0.3s, box-shadow 0.3s;
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
     }
-    .game-list li:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0 15px rgba(255,138,0,0.5);
-    }
-    .game-list a {
-      text-decoration: none;
-      font-size: 1.2rem;
-      color: white;
-      font-weight: bold;
-    }
-    footer {
-      padding: 15px;
+
+    .card {
+      width: 260px;
+      background: var(--card);
+      border-radius: 20px;
+      padding: 1.8rem 1rem;
       text-align: center;
-      color: #aaa;
-      font-size: 0.9rem;
+      box-shadow: 0 8px 25px var(--shadow);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      backdrop-filter: blur(15px);
+      animation: fadeUp 1s ease both;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 12px 40px rgba(255, 138, 0, 0.3);
+    }
+
+    .card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+      background: var(--accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .card a {
+      display: inline-block;
+      margin-top: 8px;
+      text-decoration: none;
+      background: var(--accent);
+      color: white;
+      padding: 8px 18px;
+      border-radius: 25px;
+      transition: opacity 0.3s;
+      font-weight: 500;
+    }
+    .card a:hover {
+      opacity: 0.8;
+    }
+
+    footer {
+      margin-top: auto;
+      text-align: center;
+      padding: 1rem;
+      opacity: 0.8;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <header>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="projects.html">Projects</a></li>
-        <li><a href="games.html">Games 🎮</a></li>
-        <li><a href="about.html">About</a></li>
-      </ul>
-    </nav>
-  </header>
 
+  <!-- 🌗 Luxvora Theme Toggle -->
+  <div class="theme-toggle">
+    <input type="checkbox" id="theme-switch" />
+    <label for="theme-switch" class="switch">
+      <span class="sun">☀️</span>
+      <span class="moon">🌙</span>
+    </label>
+  </div>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../projects/projects.html">Projects</a>
+    <a href="games.html">Games</a>
+    <a href="../about.html">About</a>
+  </nav>
+
+  <!-- Hero Section -->
   <section class="hero">
-    <h1>🎮 Luxvoraofficial Games Arcade</h1>
-    <ul class="game-list">
-      <li><a href="games/snake.html">🐍 Snake Game</a></li>
-      <li><a href="games/tictactoe.html">❌⭕ Tic Tac Toe</a></li>
-      <li><a href="games/memory.html">🧠 Memory Game</a></li>
-      <li><a href="games/rps.html">✊✋✌ Rock Paper Scissors</a></li>
-    </ul>
+    <h1>🎮 Luxvora Arcade</h1>
+    <p>Step into the Luxvora gaming dimension — minimal, elegant, and futuristic.</p>
   </section>
 
-  <footer>
-    © 2025 Luxvoraofficial | Built by Rehan Sheikh
-  </footer>
+  <!-- Games List -->
+  <div class="container">
+    <div class="card">
+      <h3>🐍 Snake Game</h3>
+      <p>Classic snake with Luxvora glow.</p>
+      <a href="snake.html">Play Now</a>
+    </div>
+    <div class="card">
+      <h3>❌⭕ Tic Tac Toe</h3>
+      <p>Minimalist two-player challenge.</p>
+      <a href="tictactoe.html">Play Now</a>
+    </div>
+    <div class="card">
+      <h3>🧠 Memory Game</h3>
+      <p>Match cards and test your recall.</p>
+      <a href="memory.html">Play Now</a>
+    </div>
+    <div class="card">
+      <h3>✊✋✌ RPS</h3>
+      <p>Rock Paper Scissors with flair.</p>
+      <a href="rps.html">Play Now</a>
+    </div>
+  </div>
+
+  <footer>LuxvoraOfficial © Built by Rehan Sheikh</footer>
+
+  <script src="../script.js"></script>
 </body>
 </html>
