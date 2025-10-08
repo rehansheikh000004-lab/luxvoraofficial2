@@ -1,48 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About | Luxvora Arcade</title>
-  
-  <!-- 🌈 Linking your shared stylesheet -->
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About | Luxvora Universe</title>
+
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    :root {
+      --accent-start: #ff8a00;
+      --accent-end: #e52e71;
+      --glass: rgba(255,255,255,0.04);
+      --radius: 18px;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto;
+      color: #f0eef8;
+      background: radial-gradient(800px 400px at 10% 10%, rgba(229,138,0,0.06), transparent 6%),
+                  radial-gradient(1000px 600px at 90% 90%, rgba(229,46,113,0.05), transparent 6%),
+                  linear-gradient(180deg,#070710 0%, #0b0e25 30%, #1b1530 70%, #07040a 100%);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Floating ambient lights */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.08;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      animation: float 12s ease-in-out infinite;
+    }
+    .orb.one { width: 480px; height: 480px; left: -200px; top: -120px; background: linear-gradient(90deg, #2b1b6b, #4f2a91); }
+    .orb.two { width: 400px; height: 400px; right: -150px; bottom: -120px; background: linear-gradient(90deg, #3b1b2b, #7b2a52); animation-delay: 3s; }
+
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(25px); } }
+
+    /* Header */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 36px;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.00));
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 22px;
+      margin: 0;
+      padding: 0;
+    }
+    nav a {
+      color: #e0dde9;
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: .3px;
+      transition: all 0.3s;
+    }
+    nav a:hover {
+      color: #fff;
+      text-shadow: 0 0 12px rgba(255,138,0,0.5);
+    }
+    nav a.active {
+      background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Hero Section */
+    .hero {
+      max-width: 1000px;
+      margin: 80px auto 30px;
+      padding: 0 24px;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 2.8rem;
+      margin: 0;
+      background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      margin-top: 12px;
+      font-size: 1.05rem;
+      color: rgba(232,232,238,0.78);
+      max-width: 700px;
+      margin-inline: auto;
+      line-height: 1.6;
+    }
+
+    /* About Section */
+    .about-content {
+      max-width: 1000px;
+      margin: 50px auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .about-text {
+      background: rgba(255,255,255,0.03);
+      border-radius: var(--radius);
+      padding: 30px;
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 8px 30px rgba(3,6,23,0.55);
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease;
+    }
+    .about-text:hover { transform: translateY(-8px); }
+
+    .about-text h2 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .about-text p {
+      color: rgba(240,240,248,0.85);
+      line-height: 1.65;
+      font-size: 0.98rem;
+    }
+
+    .about-image {
+      text-align: center;
+    }
+    .about-image img {
+      width: 90%;
+      max-width: 360px;
+      border-radius: var(--radius);
+      box-shadow: 0 0 60px rgba(229,46,113,0.25);
+      transition: transform .4s ease;
+    }
+    .about-image img:hover { transform: scale(1.05) rotate(1deg); }
+
+    /* Philosophy / Vision Section */
+    .vision {
+      max-width: 900px;
+      margin: 80px auto;
+      text-align: center;
+      padding: 0 24px;
+    }
+    .vision h2 {
+      font-size: 1.8rem;
+      margin-bottom: 14px;
+      background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .vision p {
+      font-size: 1rem;
+      color: rgba(230,230,240,0.8);
+      line-height: 1.6;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    footer {
+      margin-top: 80px;
+      padding: 20px;
+      color: rgba(230,230,240,0.65);
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 800px) {
+      .about-content {
+        grid-template-columns: 1fr;
+      }
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+
   <header>
     <nav>
       <ul>
         <li><a href="index.html">Home</a></li>
-        <li><a href="games.html">Games 🎮</a></li>
         <li><a href="projects.html">Projects</a></li>
+        <li><a href="games.html">Games 🎮</a></li>
         <li><a href="about.html" class="active">About</a></li>
       </ul>
     </nav>
   </header>
 
-  <!-- ✨ About Section -->
-  <section class="about-arcade">
-    <div class="about-container">
-      <h1 class="about-title">🎮 Luxvora Arcade</h1>
-      <p class="about-subtitle">Created by Rehan Sheikh</p>
+  <section class="hero">
+    <h1>🌌 About Luxvora Universe</h1>
+    <p>Where design meets emotion, and code meets art. Luxvoraofficial is the creation of <strong>Rehan Sheikh</strong> — a space built to inspire, innovate, and elevate the digital world.</p>
+  </section>
 
-      <p class="about-text">
-        Welcome to <strong>Luxvora Arcade</strong> — a collection of elegant, minimal, and interactive web games built with creativity and code.
-        Each game is handcrafted to blend <em>aesthetics</em> with <em>fun</em>, delivering smooth, responsive experiences across desktop and mobile.
+  <section class="about-content">
+    <div class="about-text">
+      <h2>👨‍💻 The Creator</h2>
+      <p>
+        Hi, I’m <strong>Rehan Sheikh</strong> — a designer, developer, and visionary who believes in crafting digital experiences that resonate with purpose.  
+        Luxvoraofficial isn’t just a portfolio — it’s a living universe of creativity, balance, and expression through technology.
       </p>
-
-      <p class="about-text">
-        Designed under the <strong>Luxvoraofficial</strong> brand, this arcade represents passion, innovation, and a love for digital craftsmanship.
-        Whether you’re playing Snake, Tic Tac Toe, or Whack-a-Mole — every pixel here reflects style, focus, and inspiration.
+      <p>
+        Every pixel, every line of code, and every animation within Luxvora reflects a pursuit of aesthetic perfection and emotional clarity.  
+        From apps to games to immersive web art — everything here is designed with elegance and intention.
       </p>
+    </div>
 
-      <p class="about-signature">✨ Built with heart by Rehan Sheikh ✨</p>
+    <div class="about-image">
+      <img src="assets/luxvora-profile.png" alt="Luxvora Universe Rehan Sheikh">
     </div>
   </section>
 
+  <section class="vision">
+    <h2>💫 Vision & Philosophy</h2>
+    <p>
+      The Luxvora Universe is built on the belief that beauty and technology should coexist seamlessly.  
+      It’s about merging futuristic minimalism with soulful storytelling — creating experiences that don’t just look beautiful, but feel alive.
+    </p>
+  </section>
+
   <footer>
-    Luxvoraofficial | Built by Rehan Sheikh
+    © 2025 Luxvoraofficial — Designed & Built by Rehan Sheikh
   </footer>
 </body>
 </html>
