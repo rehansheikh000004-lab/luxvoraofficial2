@@ -1,176 +1,265 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Luxvora Arcade | Games</title>
-  <link rel="stylesheet" href="../style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Luxvora Games — Aesthetic Gaming Universe</title>
+
+  <link rel="stylesheet" href="style.css" />
+
   <style>
-    /* Page-specific background & animations */
+    :root {
+      --accent-start: #ff8a00;
+      --accent-end: #e52e71;
+      --card-radius: 16px;
+      --glass-bg: rgba(255, 255, 255, 0.03);
+    }
+
     body {
-      background: radial-gradient(circle at top, #1b1b28, #0b0b13);
+      margin: 0;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      color: var(--text);
-      transition: background 0.5s ease;
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto;
+      color: #eae8f5;
+      background: radial-gradient(900px 400px at 10% 10%, rgba(229,138,0,0.06), transparent 6%),
+                  radial-gradient(900px 500px at 90% 80%, rgba(229,46,113,0.05), transparent 6%),
+                  linear-gradient(180deg, #070710 0%, #0b0e25 30%, #1b1530 70%, #07040a 100%);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
     }
 
-    /* Floating gradient overlay for glow effect */
-    body::before {
-      content: "";
+    /* Floating ambient lights */
+    .orb {
       position: fixed;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: conic-gradient(from 180deg at 50% 50%, #ff0080, #7928ca, #2575fc, #ff0080);
-      filter: blur(150px);
+      border-radius: 50%;
+      filter: blur(50px);
       opacity: 0.08;
-      z-index: -1;
-      animation: rotate 20s linear infinite;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      animation: float 14s ease-in-out infinite;
+    }
+    .orb.one {
+      width: 520px;
+      height: 520px;
+      left: -180px;
+      top: -100px;
+      background: linear-gradient(90deg, #2b1b6b, #4f2a91);
+    }
+    .orb.two {
+      width: 420px;
+      height: 420px;
+      right: -150px;
+      bottom: -120px;
+      background: linear-gradient(90deg, #3b1b2b, #7b2a52);
+      animation-delay: 3s;
     }
 
-    @keyframes rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(25px); }
     }
 
-    .hero {
-      text-align: center;
-      margin: 3rem 1rem 2rem;
-      animation: fadeIn 1.2s ease;
+    /* Header */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 36px;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.00));
+      border-bottom: 1px solid rgba(255,255,255,0.03);
     }
-    .hero h1 {
-      font-size: 2.8rem;
-      background: var(--accent);
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 22px;
+      margin: 0;
+      padding: 0;
+    }
+    nav a {
+      color: #e0dde9;
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: .3px;
+      transition: all 0.3s;
+    }
+    nav a:hover {
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255,138,0,0.5);
+    }
+    nav a.active {
+      background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      font-weight: 700;
+    }
+
+    /* Hero section */
+    .hero {
+      max-width: 1100px;
+      margin: 60px auto 20px;
+      padding: 0 20px;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 2.6rem;
+      margin: 0;
+      background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
     .hero p {
-      font-size: 1.1rem;
-      opacity: 0.9;
-      margin-top: 10px;
+      margin-top: 12px;
+      color: rgba(232,232,238,0.78);
+      font-size: 1.05rem;
+      max-width: 800px;
+      margin-inline: auto;
+      line-height: 1.6;
     }
 
-    .container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-      padding: 2rem;
+    /* Games Grid */
+    .games-grid {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 24px;
+      display: grid;
+      gap: 24px;
+      grid-template-columns: repeat(3, minmax(260px, 1fr));
     }
 
+    @media (max-width: 960px) {
+      .games-grid { grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+    }
+    @media (max-width: 600px) {
+      .games-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2rem; }
+    }
+
+    /* Game Card */
     .card {
-      width: 260px;
-      background: var(--card);
-      border-radius: 20px;
-      padding: 1.8rem 1rem;
-      text-align: center;
-      box-shadow: 0 8px 25px var(--shadow);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-      backdrop-filter: blur(15px);
-      animation: fadeUp 1s ease both;
+      background: var(--glass-bg);
+      border-radius: var(--card-radius);
+      padding: 18px;
+      position: relative;
+      border: 1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 10px 40px rgba(5,10,40,0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all 0.35s ease;
+      overflow: hidden;
     }
-
     .card:hover {
-      transform: translateY(-10px) scale(1.03);
-      box-shadow: 0 12px 40px rgba(255, 138, 0, 0.3);
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 60px rgba(229,46,113,0.25);
     }
 
     .card h3 {
-      font-size: 1.4rem;
-      margin-bottom: 10px;
-      background: var(--accent);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      margin: 0;
+      font-size: 1.3rem;
+      color: #fff;
     }
 
-    .card a {
-      display: inline-block;
-      margin-top: 8px;
-      text-decoration: none;
-      background: var(--accent);
-      color: white;
-      padding: 8px 18px;
-      border-radius: 25px;
-      transition: opacity 0.3s;
-      font-weight: 500;
+    .card p {
+      color: rgba(232,232,238,0.75);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      flex: 1;
     }
-    .card a:hover {
-      opacity: 0.8;
+
+    .btn {
+      background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      border-radius: 12px;
+      padding: 8px 14px;
+      display: inline-block;
+      transition: all 0.2s ease;
+    }
+    .btn:hover { transform: scale(1.05); }
+
+    .accent-strip {
+      height: 6px;
+      width: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.4s;
+    }
+    .card:hover .accent-strip {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     footer {
-      margin-top: auto;
+      margin: 60px auto 40px;
+      padding: 20px;
       text-align: center;
-      padding: 1rem;
-      opacity: 0.8;
+      color: rgba(230,230,240,0.6);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
   </style>
 </head>
+
 <body>
+  <div class="orb one"></div>
+  <div class="orb two"></div>
 
-  <!-- 🌗 Luxvora Theme Toggle -->
-  <div class="theme-toggle">
-    <input type="checkbox" id="theme-switch" />
-    <label for="theme-switch" class="switch">
-      <span class="sun">☀️</span>
-      <span class="moon">🌙</span>
-    </label>
-  </div>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="games.html" class="active">Games 🎮</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  <!-- Navigation -->
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="projects.html">Projects</a>
-    <a href="games.html">Games</a>
-    <a href="about.html">About</a>
-  </nav>
-
-  <!-- Hero Section -->
   <section class="hero">
-    <h1>🎮 Luxvora Arcade</h1>
-    <p>Step into the Luxvora gaming dimension — minimal, elegant, and futuristic.</p>
+    <h1>🎮 Luxvora Games</h1>
+    <p>Explore interactive creations crafted with precision, smooth animations, and the Luxvora Universe aesthetic.  
+    Every game is an experience — minimal, polished, and deeply immersive.</p>
   </section>
 
-  <!-- Games List -->
-  <div class="container">
+  <section class="games-grid">
     <div class="card">
-      <h3>🐍 Snake Game</h3>
-      <p>Classic snake with Luxvora glow.</p>
-      <a href="games/snake.html">Play Now</a>
+      <h3>Tic Tac Toe</h3>
+      <p>Classic reinvented for modern web — smooth controls, adaptive difficulty, and elegant sound design.</p>
+      <a href="games/tictactoe.html" class="btn">Play Now</a>
+      <div class="accent-strip"></div>
     </div>
-    <div class="card">
-      <h3>❌⭕ Tic Tac Toe</h3>
-      <p>Minimalist two-player challenge.</p>
-      <a href="games/tictactoe.html">Play Now</a>
-    </div>
-    <div class="card">
-      <h3>🧠 Memory Game</h3>
-      <p>Match cards and test your recall.</p>
-      <a href="games/memory.html">Play Now</a>
-    </div>
-    <div class="card">
-      <h3>✊✋✌ RPS</h3>
-      <p>Rock Paper Scissors with flair.</p>
-      <a href="games/rps.html">Play Now</a>
-    </div>
-  </div>
 
-  <footer>LuxvoraOfficial © Built by Rehan Sheikh</footer>
+    <div class="card">
+      <h3>Rock Paper Scissors</h3>
+      <p>Break bricks in a glowing universe — fluid physics, gradient lighting, and touch-friendly play.</p>
+      <a href="games/rps.html" class="btn">Play Now</a>
+      <div class="accent-strip"></div>
+    </div>
 
-  <script src="../script.js"></script>
+    <div class="card">
+      <h3>Memory Matrix</h3>
+      <p>Test your pattern recall in this glowing matrix challenge. Elegant visuals meet engaging gameplay.</p>
+      <a href="games/memory.html" class="btn">Play Now</a>
+      <div class="accent-strip"></div>
+    </div>
+
+    <div class="card">
+      <h3>Snake Neo</h3>
+      <p>A fresh take on the retro Snake — glowing trails, soft physics, and smooth mobile touch support.</p>
+      <a href="games/snake.html" class="btn">Play Now</a>
+      <div class="accent-strip"></div>
+    </div>
+
+  <footer>
+    © 2025 Luxvoraofficial — Designed & Built by Rehan Sheikh
+  </footer>
 </body>
 </html>
