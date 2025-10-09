@@ -14,22 +14,6 @@ body {
   overflow-x: hidden;
 }
 
-/* 🌗 Light Mode (Default) */
-:root {
-  --bg: #fafafa;
-  --text: #111;
-  --accent: linear-gradient(135deg, #6a11cb, #2575fc);
-  --card-bg: rgba(255, 255, 255, 0.6);
-}
-
-/* 🌑 Dark Mode */
-body.dark {
-  --bg: #0d0d0d;
-  --text: #fff;
-  --accent: linear-gradient(135deg, #ff0080, #7928ca);
-  --card-bg: rgba(20, 20, 20, 0.6);
-}
-
 /* Global Body */
 body {
   background: var(--bg);
@@ -90,27 +74,6 @@ h1, h2 {
 
 .projects-page {
   background: linear-gradient(135deg, #e0eafc, #cfdef3);
-}
-
-/* 🌗 Toggle Switch */
-.theme-toggle {
-  position: fixed;
-  top: 15px;
-  right: 15px;
-}
-
-.switch {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  background: var(--card-bg);
-  border-radius: 20px;
-  padding: 5px 10px;
-  gap: 8px;
-}
-
-.sun, .moon {
-  font-size: 1.2rem;
 }
 
 /* Footer */
